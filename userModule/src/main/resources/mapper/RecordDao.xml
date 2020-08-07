@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bluemsun.dao.RecordDao">
+    <resultMap id="recordMap" type="com.bluemsun.entity.Record">
+        <id column="record_id" property="recordId"/>
+        <result column="user_id" property="userId"/>
+        <result column="ip" property="ip"/>
+        <result column="login_time" property="loginTime"/>
+    </resultMap>
+    <insert id="insertRecord">
+        insert into
+         tb_record(user_id,ip,login_time)
+         values (#{userId},#{ip},#{loginTime})
+    </insert>
+    <select id="getRecord" resultMap="recordMap">
+        select ip,record_id,login_time
+        from tb_record
+        where user_id=#{userId}
+        order by login_time desc
+        LIMIT #{startIndex},#{pageSize}
+    </select>
+    <select id="gerRecordCount" resultType="int">
+        select count(*)
+        from tb_record
+        where user_id=#{userId}
+    </select>
+    <delete id="deleteUserRecord" >
+        delete from tb_record
+        where user_id=#{userId}
+    </delete>
+    <select id="getUserAllRecord" resultMap="recordMap">
+        select ip,record_id,login_time
+        from tb_record
+        where user_id=#{userId}
+    </select>
+</mapper>

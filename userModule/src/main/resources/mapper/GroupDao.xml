@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bluemsun.dao.GroupDao">
+
+    <insert id="insert">
+        insert into tb_group(group_id,group_name)
+        values(#{groupId},#{name})
+    </insert>
+    <update id="updateGroup">
+        update tb_group
+        set group_name = #{name}
+        where group_id =#{groupId}
+    </update>
+    <update id="updateFile">
+        update tb_group
+        set md5 = #{md5} and json_file=#{s}
+        where group_id = #{groupId}
+    </update>
+    <delete id="deleteGroup">
+        delete from tb_group
+        where group_id =#{groupId}
+    </delete>
+    <select id="checkGroup" resultType="java.lang.Integer">
+        select count(*)
+        from tb_group
+        where group_id =#{groupId}
+    </select>
+    <select id="getGroupByUser" resultType="com.bluemsun.entity.Group">
+        select *
+        from tb_group
+        where user_id =#{userId}
+    </select>
+</mapper>
