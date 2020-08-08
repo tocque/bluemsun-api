@@ -10,6 +10,7 @@ import com.bluemsun.entity.Group;
 import com.bluemsun.entity.User;
 import com.bluemsun.util.HttpServletRequestUtil;
 import com.bluemsun.util.MD5Util;
+import com.bluemsun.vo.GroupVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,7 +84,7 @@ public Map<String,Object> createGroup(HttpServletRequest request){
         String userString = jedisUtilStrings.get(token);
         JSONObject userJson = JSON.parseObject(userString);
         User user = JSON.toJavaObject(userJson, User.class);
-        List<Group> groupList=groupDao.getGroupByUser(user.getUserId());
+        List<GroupVo> groupList=groupDao.getGroupByUser(user.getUserId());
         modelMap.put("groupList",groupList);
         modelMap.put("success",1);
         modelMap.put("info","获取成功");

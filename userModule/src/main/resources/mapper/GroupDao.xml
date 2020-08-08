@@ -25,9 +25,9 @@
         from tb_group
         where group_id =#{groupId}
     </select>
-    <select id="getGroupByUser" resultType="com.bluemsun.entity.Group">
-        select *
-        from tb_group
-        where user_id =#{userId}
+    <select id="getGroupByUser" resultType="com.bluemsun.vo.GroupVo">
+        select g.group_name,g.group_id,g.json_file,g.md5,m.type
+        from tb_group g,tb_member m
+        where m.user_id = #{userId} and m.group_id = g.group_id
     </select>
 </mapper>
