@@ -11,7 +11,7 @@
  Target Server Version : 50716
  File Encoding         : 65001
 
- Date: 25/08/2020 13:53:31
+ Date: 25/08/2020 14:08:57
 */
 
 SET NAMES utf8mb4;
@@ -34,10 +34,10 @@ CREATE TABLE `tb_group`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for tb_menber
+-- Table structure for tb_member
 -- ----------------------------
-DROP TABLE IF EXISTS `tb_menber`;
-CREATE TABLE `tb_menber`  (
+DROP TABLE IF EXISTS `tb_member`;
+CREATE TABLE `tb_member`  (
   `group_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `user_id` int(10) NOT NULL,
   `type` int(10) NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE `tb_menber`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of tb_menber
+-- Records of tb_member
 -- ----------------------------
 
 -- ----------------------------
