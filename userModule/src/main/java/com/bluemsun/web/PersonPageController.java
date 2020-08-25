@@ -78,7 +78,7 @@ public class PersonPageController {
 //                modelMap.put("success",UserStateEnum.SERDENY.getState());
 //                modelMap.put("info",UserStateEnum.SERDENY.getStateInfo());
 //            }else{
-            int i = userDao.UpdateUserPassword(user.getUserId(),HttpServletRequestUtil.getString(request,"newPassword"),new Date(System.currentTimeMillis()));
+            int i = userDao.UpdateUserPassword(user.getUserId(),HttpServletRequestUtil.getString(request,"newPassword"));
             if(i==1){
                 //密码更新成功
                 modelMap.put("success",1);

@@ -7,6 +7,7 @@ import com.bluemsun.vo.NotifyVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -22,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 //websocket不是单例模式，spring会自动建立多个实例
 @Component
 @ServerEndpoint(value = "/notify/{userId}")
+@CrossOrigin
 public class Notify {
 
     private static Logger logger = LoggerFactory.getLogger(Notify.class);

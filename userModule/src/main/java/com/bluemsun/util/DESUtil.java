@@ -93,9 +93,9 @@ public class DESUtil {
 	}
 
 	public static void main(String[] args) {
-	    String a = getEncryptString("");
+	    String a = getEncryptString("hwqvgpdqaoldcafg");
 		System.out.println(a);
-		System.out.println(getDecryptString("sqMffXink5Lm0YSpF8Lmxx8kB9Ww/4zb"));
+//		System.out.println(getDecryptString("sqMffXink5Lm0YSpF8Lmxx8kB9Ww/4zb"));
 	}
 
 }

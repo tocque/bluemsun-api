@@ -127,7 +127,7 @@ private User user;
         if(jedisUtilKeys.exists(check)){
             String email = jedisUtilStrings.get(check);
             jedisUtilKeys.del(check);
-            userDao.UpdateUserPassword2(email,password,new Date(System.currentTimeMillis()));
+            userDao.UpdateUserPassword2(email,password);
             User user = userDao.CheckLogin(email,password);
             String token = loginService.loginService(user,request);
             modelMap.put("user",user);

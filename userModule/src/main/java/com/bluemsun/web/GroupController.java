@@ -12,10 +12,8 @@ import com.bluemsun.util.HttpServletRequestUtil;
 import com.bluemsun.util.MD5Util;
 import com.bluemsun.vo.GroupVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -24,7 +22,9 @@ import java.util.Map;
 import java.util.Random;
 
 @CrossOrigin
-@RestController("/group")
+@Controller
+@RequestMapping("/group")
+@ResponseBody
 public class GroupController {
     @Autowired
     private GroupDao groupDao;

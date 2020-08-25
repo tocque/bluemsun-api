@@ -13,7 +13,7 @@
     </update>
     <update id="updateFile">
         update tb_group
-        set md5 = #{md5} and json_file=#{s}
+        set md5 = #{md5} , json_file=#{s}
         where group_id = #{groupId}
     </update>
     <delete id="deleteGroup">

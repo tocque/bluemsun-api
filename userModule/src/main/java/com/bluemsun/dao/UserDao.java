@@ -115,7 +115,7 @@ public interface UserDao {
      * @param userId
      * @return
      */
-    int UpdateUserPassword(@Param("userId") int userId,@Param("password") String password,@Param("lastEditTime") Date lastEditTime);
+    int UpdateUserPassword(@Param("userId") int userId,@Param("password") String password);
 
     /**
      * 密码更改
@@ -123,7 +123,7 @@ public interface UserDao {
      * @param password
      * @return
      */
-    int UpdateUserPassword2(@Param("userName")String userName,@Param("password")String password,@Param("lastEditTime")Date lastEditTime);
+    int UpdateUserPassword2(@Param("userName")String userName,@Param("password")String password);
     /**
      * 密码验证
      * @param userId

@@ -22,7 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController("/personPage")
+@RestController
+@RequestMapping("/personPage")
 @CrossOrigin
 public class NotifyController {
     @Autowired

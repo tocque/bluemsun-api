@@ -22,7 +22,7 @@
         select u.username,u.email,u.user_id,m.type
         from tb_user u,tb_member m
         where m.group_id = #{groupId}
-        u.user_id = m.user_id
+        and u.user_id = m.user_id
     </select>
     <select id="getMember" resultType="com.bluemsun.entity.Member">
         select *

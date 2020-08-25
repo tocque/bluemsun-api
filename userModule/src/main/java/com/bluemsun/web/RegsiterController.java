@@ -78,7 +78,6 @@ public class RegsiterController {
         user.setPassword(HttpServletRequestUtil.getString(request,"password"));
         String check = HttpServletRequestUtil.getString(request,"check");
          if (jedisUtilKeys.exists(check)){
-             jedisUtilKeys.del(check);
              int count = userDao.checkOutEmail(user.getEmail());
              if (count == 1) {
                  //不成功
@@ -89,12 +88,13 @@ public class RegsiterController {
              int flag = registerService.submitRegister(user);
              if(flag>0){
                  //添加成功
-                 User user2 = userDao.CheckLogin(HttpServletRequestUtil.getString(request,"username"),HttpServletRequestUtil.getString(request,"password"));
+                 User user2 = userDao.CheckLogin(HttpServletRequestUtil.getString(request,"email"),HttpServletRequestUtil.getString(request,"password"));
                  String token=loginService.loginService(user2,request);
                  modelMap.put("user",user2);
                  modelMap.put("token",token);
                  modelMap.put("success",1);
                  modelMap.put("info","注册成功");
+                 jedisUtilKeys.del(check);
              }else{
                  //添加不成功
                  modelMap.put("success",0);
@@ -106,7 +106,6 @@ public class RegsiterController {
          }
 //        user.setQuestionAnswer(HttpServletRequestUtil.getString(request,"questionAnswer"));
 //        user.setSecurityQuestion(HttpServletRequestUtil.getInt(request,"securityQuestion"));
-//
         return modelMap;
     }
 //    @CrossOrigin

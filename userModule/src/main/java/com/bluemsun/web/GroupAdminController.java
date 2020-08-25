@@ -21,7 +21,8 @@ import java.util.Map;
 import java.util.UUID;
 
 @CrossOrigin
-@RestController("/groupAdmin")
+@RestController
+@RequestMapping("/groupAdmin")
 public class GroupAdminController {
     @Autowired
     private GroupDao groupDao;
@@ -47,7 +48,7 @@ public class GroupAdminController {
         String groupId = HttpServletRequestUtil.getString(request,"groupId");
         groupDao.deleteGroup(groupId);
         memberDao.deleteGroup(groupId);
-        modelMap.put("success",0);
+        modelMap.put("success",1);
         modelMap.put("info","删除成功");
         return modelMap;
     }

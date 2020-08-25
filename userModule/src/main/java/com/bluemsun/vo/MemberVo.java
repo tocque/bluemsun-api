@@ -3,7 +3,7 @@ package com.bluemsun.vo;
 public class MemberVo {
     private String username;
     private String email;
-    private String userId;
+    private Integer userId;
     private int type;
 
     public String getUsername() {
@@ -22,11 +22,11 @@ public class MemberVo {
         this.email = email;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
