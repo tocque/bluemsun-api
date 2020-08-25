@@ -15,32 +15,32 @@ private UserDao userDao;
     private static Logger logger = LoggerFactory.getLogger(DaoTest.class);
     @Test
 public void testUserDao(){
-       for(int i = 100;i>0;i--){
-           User user = new User();
-           user.setUsername("user"+i);
-           user.setSecurityQuestion(i%10+1);
-           user.setEmail(1000+""+i+"@qq.com");
-           user.setCreateTime( new Date(System.currentTimeMillis()));
-           user.setLastEditTime(new Date(System.currentTimeMillis()));
-           String password = MD5Util.getMd5("password"+i,32);
-           user.setPassword(password);
-           String answer=MD5Util.getMd5("answer"+i,32);
-           user.setQuestionAnswer(answer);
-          userDao.uploadRegisterInfo(user);
-           //1为普通用户2为管理员
-           int status;
-           int available;
-           Random r = new Random();
-           status =(i+r.nextInt(1000000))%2+1;
-           if(status==2){
-                available=1;
-           }else available = (i+r.nextInt(1000000))%3; ;
-           //0为验证邮箱，1为可用，2为封号
-           Date d =new Date(System.currentTimeMillis());
-           System.out.println(d);
-           System.out.println(user.getCreateTime());
-           System.out.println(user.getLastEditTime());
-           userDao.UpdateUserAvailableAndStatus(user.getUserId(),available,status);       }
+//       for(int i = 100;i>0;i--){
+//           User user = new User();
+//           user.setUsername("user"+i);
+//           user.setSecurityQuestion(i%10+1);
+//           user.setEmail(1000+""+i+"@qq.com");
+//           user.setCreateTime( new Date(System.currentTimeMillis()));
+//           user.setLastEditTime(new Date(System.currentTimeMillis()));
+//           String password = MD5Util.getMd5("password"+i,32);
+//           user.setPassword(password);
+//           String answer=MD5Util.getMd5("answer"+i,32);
+//           user.setQuestionAnswer(answer);
+//          userDao.uploadRegisterInfo(user);
+//           //1为普通用户2为管理员
+//           int status;
+//           int available;
+//           Random r = new Random();
+//           status =(i+r.nextInt(1000000))%2+1;
+//           if(status==2){
+//                available=1;
+//           }else available = (i+r.nextInt(1000000))%3; ;
+//           //0为验证邮箱，1为可用，2为封号
+//           Date d =new Date(System.currentTimeMillis());
+//           System.out.println(d);
+//           System.out.println(user.getCreateTime());
+//           System.out.println(user.getLastEditTime());
+//           userDao.UpdateUserAvailableAndStatus(user.getUserId(),available,status);       }
 //   int a = userDao.UpdateUserAvai lableAndStatus(2,1,1);
 //   System.out.println(a);
 //   Integer b = userDao.getUserAvailable("aa");

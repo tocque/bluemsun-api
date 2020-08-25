@@ -20,19 +20,19 @@ public class KillOutTimeUser {
     private RecordDao recordDao;
 //@Scheduled(cron = "0/10 * * * * ? ")
     public void killOutTime(){
-    List<User> userList=userDao.getAllUser();
-    for(User user : userList){
-        if (user.getAvailable()==1){
-            continue;
-        }else if(user.getAvailable()==0){
-            if (TimeUtil.BetweenHour(user.getCreateTime())>=2){
-                userDao.deleteUser(user.getUserId());
-            }else if (user.getAvailable()==-1){
-                if (TimeUtil.BetweenHour(user.getLastEditTime())>=(24*7)){
-                    recordDao.deleteUserRecord(user.getUserId());
-                }
-            }
-        }
-    }
+//    List<User> userList=userDao.getAllUser();
+//    for(User user : userList){
+//        if (user.getAvailable()==1){
+//            continue;
+//        }else if(user.getAvailable()==0){
+//            if (TimeUtil.BetweenHour(user.getCreateTime())>=2){
+//                userDao.deleteUser(user.getUserId());
+//            }else if (user.getAvailable()==-1){
+//                if (TimeUtil.BetweenHour(user.getLastEditTime())>=(24*7)){
+//                    recordDao.deleteUserRecord(user.getUserId());
+//                }
+//            }
+//        }
+//    }
 }
 }
