@@ -15,32 +15,34 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 @Controller
 @RequestMapping("/user")
 public class LoginController {
-   @Autowired
-  private   UserDao userDao;
-   @Autowired
-   private LoginService loginService;
-   @Autowired
-   private JedisUtil.Keys jedisUtilKeys;
-   @Autowired
-   private PasswordService passwordService;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private LoginService loginService;
+    @Autowired
+    private JedisUtil.Keys jedisUtilKeys;
+    @Autowired
+    private PasswordService passwordService;
     @Autowired
     private JedisUtil.Strings jedisUtilStrings;
-private User user;
-    @RequestMapping(value = "/login" )
+    private User user;
+
+    @RequestMapping(value = "/login")
     @ResponseBody
-    @CrossOrigin
-    public Map<String,Object> LoginCheck(HttpServletRequest request){
+    public Map<String, Object> LoginCheck(HttpServletRequest request) {
         Logger logger = LoggerFactory.getLogger(LoginController.class);
-        Map<String,Object> modelMap = new HashMap<>();
-        String userName=HttpServletRequestUtil.getString(request,"username");
-        String password=HttpServletRequestUtil.getString(request,"password");
+        Map<String, Object> modelMap = new HashMap<>();
+        String userName = HttpServletRequestUtil.getString(request, "username");
+        String password = HttpServletRequestUtil.getString(request, "password");
         //验证码检查
 //        if(CodeUtil.checkVerifyCode(request)){
 //        int flag=userDao.checkOutUserName(userName);
@@ -49,10 +51,10 @@ private User user;
 //        modelMap.put("success", UserStateEnum.NULLUSER.getState());
 //        modelMap.put("info",UserStateEnum.NULLUSER.getStateInfo());
 //     }else{
-            user = userDao.CheckLogin(userName,password);
-            logger.info(request.getRemoteAddr());
-            logger.info(userName);
-        if(user==null){
+        user = userDao.CheckLogin(userName, password);
+        logger.info(request.getRemoteAddr());
+        logger.info(userName);
+        if (user == null) {
             //登录名或邮箱或密码错误
 //            request.getSession().setAttribute("userName",userName);
 //            Integer count=null;
@@ -64,9 +66,9 @@ private User user;
 //            }
 //            logger.info("密码错误第"+count+"次");
 //            request.getSession().setAttribute("count",count);
-            modelMap.put("success",0);
-            modelMap.put("info","用户名或密码错误");
-        }else{
+            modelMap.put("success", 0);
+            modelMap.put("info", "用户名或密码错误");
+        } else {
 //     if(user.getAvailable()==0){
 //        //邮箱未验证
 //        modelMap.put("success",UserStateEnum.CHECK.getState());
@@ -86,56 +88,54 @@ private User user;
 //             modelMap.put("success",UserStateEnum.NEEDUPDATE.getState());
 //             modelMap.put("info",UserStateEnum.NEEDUPDATE.getStateInfo());
 //         }else {
-             //成功登录
-             String token=loginService.loginService(user,request);
-             modelMap.put("user",user);
-             modelMap.put("token",token);
-             modelMap.put("success", 1);
-             modelMap.put("info", "登录成功");
+            //成功登录
+            String token = loginService.loginService(user, request);
+            modelMap.put("user", user);
+            modelMap.put("token", token);
+            modelMap.put("success", 1);
+            modelMap.put("info", "登录成功");
 //         }
 //     }
-    }
+        }
 //        }
 //        else{
 //            //验证码错误
 //            modelMap.put("success",UserStateEnum.ERRORCHECK.getState());
 //            modelMap.put("info",UserStateEnum.ERRORCHECK.getStateInfo());
 //        }
-    return modelMap;
-}
+        return modelMap;
+    }
 
-@RequestMapping(value = "/logout",method = RequestMethod.GET)
-@ResponseBody
-@CrossOrigin
-    public Map<String,Object> Logout(HttpServletRequest request) {
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> Logout(HttpServletRequest request) {
         String token = request.getHeader("token");
         jedisUtilKeys.del(token);
-        Map<String,Object> modelMap = new HashMap<>();
-        modelMap.put("success",1);
-        modelMap.put("info","退出等录成功");
+        Map<String, Object> modelMap = new HashMap<>();
+        modelMap.put("success", 1);
+        modelMap.put("info", "退出等录成功");
         return modelMap;
-}
+    }
 
-    @RequestMapping(value = "/find",method = RequestMethod.POST)
+    @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
-    @CrossOrigin
-        public Map<String,Object> findPassword(HttpServletRequest request){
-        Map<String,Object> modelMap = new HashMap<>();
-        String check = HttpServletRequestUtil.getString(request,"check");
-        String password = HttpServletRequestUtil.getString(request,"password");
-        if(jedisUtilKeys.exists(check)){
+    public Map<String, Object> findPassword(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        String check = HttpServletRequestUtil.getString(request, "check");
+        String password = HttpServletRequestUtil.getString(request, "password");
+        if (jedisUtilKeys.exists(check)) {
             String email = jedisUtilStrings.get(check);
             jedisUtilKeys.del(check);
-            userDao.UpdateUserPassword2(email,password);
-            User user = userDao.CheckLogin(email,password);
-            String token = loginService.loginService(user,request);
-            modelMap.put("user",user);
-            modelMap.put("token",token);
-            modelMap.put("success",1);
-            modelMap.put("info","密码修改成功");
-        }else {
-                modelMap.put("success",0);
-                modelMap.put("info","验证码错误或者失效");
+            userDao.UpdateUserPassword2(email, password);
+            User user = userDao.CheckLogin(email, password);
+            String token = loginService.loginService(user, request);
+            modelMap.put("user", user);
+            modelMap.put("token", token);
+            modelMap.put("success", 1);
+            modelMap.put("info", "密码修改成功");
+        } else {
+            modelMap.put("success", 0);
+            modelMap.put("info", "验证码错误或者失效");
         }
         return modelMap;
     }
