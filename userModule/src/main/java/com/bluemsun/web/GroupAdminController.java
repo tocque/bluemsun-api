@@ -1,6 +1,7 @@
 package com.bluemsun.web;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bluemsun.cache.JedisUtil;
 import com.bluemsun.dao.GroupDao;
 import com.bluemsun.dao.MemberDao;
@@ -54,10 +55,22 @@ public class GroupAdminController {
     public Map<String,Object> delete(HttpServletRequest request){
         Map<String,Object> modelMap = new HashMap<>();
         String groupId = HttpServletRequestUtil.getString(request,"groupId");
+
+        String token = request.getHeader("token");
+        String userString = jedisUtilStrings.get(token);
+        JSONObject userJSON = JSON.parseObject(userString);
+        User user = JSON.toJavaObject(userJSON,User.class);
+        Member member=memberDao.getMember(groupId,user.getUserId());
+
+        if(member.getType()==0){
         groupDao.deleteGroup(groupId);
         memberDao.deleteGroup(groupId);
         modelMap.put("success",1);
-        modelMap.put("info","删除成功");
+        modelMap.put("info","删除成功");}
+        else {
+            modelMap.put("success",0);
+            modelMap.put("info","权限不足");
+        }
         return modelMap;
     }
     @RequestMapping(value ="/modify",method = RequestMethod.GET)
@@ -76,12 +89,25 @@ public class GroupAdminController {
         String groupId = HttpServletRequestUtil.getString(request,"groupId");
         int userId = HttpServletRequestUtil.getInt(request,"userId");
         Member member=memberDao.getMember(groupId,userId);
+
+        String token = request.getHeader("token");
+        String userString = jedisUtilStrings.get(token);
+        JSONObject userJSON = JSON.parseObject(userString);
+        User user = JSON.toJavaObject(userJSON,User.class);
+        Member member2=memberDao.getMember(groupId,user.getUserId());
+
         if(member==null){
             modelMap.put("success",0);
             modelMap.put("info","成员不存在");
             return modelMap;
         }
         if(member.getType()==1){
+            if(member2.getType()==0){
+                memberDao.deleteMember(groupId,userId);
+                modelMap.put("success",1);
+                modelMap.put("info","删除相应用户成功");
+                return modelMap;
+            }
             modelMap.put("success",0);
             modelMap.put("info","权限不足");
             return modelMap;
@@ -98,12 +124,25 @@ public class GroupAdminController {
         int userId = HttpServletRequestUtil.getInt(request,"userId");
         int type = HttpServletRequestUtil.getInt(request,"type");
         Member member=memberDao.getMember(groupId,userId);
+
+        String token = request.getHeader("token");
+        String userString = jedisUtilStrings.get(token);
+        JSONObject userJSON = JSON.parseObject(userString);
+        User user = JSON.toJavaObject(userJSON,User.class);
+        Member member2=memberDao.getMember(groupId,user.getUserId());
+
         if(member==null){
             modelMap.put("success",0);
             modelMap.put("info","成员不存在");
             return modelMap;
         }
-        if(member.getType()==1){
+        if(member.getType()==1||type==0){
+            if(member2.getType()==0&&type!=0){
+                memberDao.updateMember(groupId,userId,type);
+                modelMap.put("success",1);
+                modelMap.put("info","修改成功");
+                return modelMap;
+            }
             modelMap.put("success",0);
             modelMap.put("info","权限不足");
             return modelMap;

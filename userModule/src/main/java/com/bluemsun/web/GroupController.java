@@ -52,7 +52,7 @@ public class GroupController {
         Integer temp = r.nextInt();
         String groupId = MD5Util.getMd5(temp.toString() + name, 6);
         groupDao.insert(groupId, name);
-        memberDao.insert(groupId, user.getUserId(), 1);
+        memberDao.insert(groupId, user.getUserId(), 0);
         modelMap.put("groupId", groupId);
         modelMap.put("success", 1);
         modelMap.put("info", "创建成功");
