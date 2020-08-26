@@ -1,6 +1,5 @@
 package com.bluemsun.dao;
 
-import com.bluemsun.entity.Group;
 import com.bluemsun.vo.GroupVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,7 +15,9 @@ public interface GroupDao {
 
     int checkGroup(@Param("groupId") String groupId);
 
-    List<GroupVo> getGroupByUser(Integer userId);
+    List<GroupVo> getGroupByUser(@Param("userId") Integer userId, @Param("search") String search, @Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
 
     int updateFile(@Param("groupId") String groupId, @Param("md5") String md5, @Param("s") String s);
+
+    int getGroupByUserCount(@Param("userId") Integer userId, @Param("search") String search);
 }

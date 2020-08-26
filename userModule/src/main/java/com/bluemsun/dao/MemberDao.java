@@ -21,4 +21,7 @@ public interface MemberDao {
 
     int checkUser(@Param("userId") Integer userId, @Param("groupId") String groupId);
 
+    int getMebmerListCount(@Param("groupId") String groupId, @Param("search") String search);
+
+    List<MemberVo> getMebmerList2(@Param("groupId") String groupId, @Param("search") String search, @Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
 }

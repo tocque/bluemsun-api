@@ -13,10 +13,18 @@
         where g.group_id in (select group_id from tb_member where user_id = #{userId})
         and g.group_id = d.group_id and d.user_id = u.user_id
         order by d.id desc
+        limit #{startIndex},#{pageSize};
     </select>
     <select id="getNotify" resultType="com.bluemsun.vo.NotifyVo">
         select g.group_id,g.group_name,u.username,d.update_time,d.id
         from tb_user u,tb_group g,tb_update d
         where d.id = #{id} and d.group_id =g.group_id and d.user_id = u.user_id
+    </select>
+    <select id="getListCount" resultType="java.lang.Integer">
+        select count(*)
+        from tb_user u,tb_group g,tb_update d
+        where g.group_id in (select group_id from tb_member where user_id = #{userId})
+        and g.group_id = d.group_id and d.user_id = u.user_id
+        order by d.id desc
     </select>
 </mapper>

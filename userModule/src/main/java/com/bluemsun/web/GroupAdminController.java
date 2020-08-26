@@ -1,9 +1,11 @@
 package com.bluemsun.web;
 
+import com.alibaba.fastjson.JSON;
 import com.bluemsun.cache.JedisUtil;
 import com.bluemsun.dao.GroupDao;
 import com.bluemsun.dao.MemberDao;
 import com.bluemsun.entity.Member;
+import com.bluemsun.entity.Page;
 import com.bluemsun.entity.User;
 import com.bluemsun.util.HttpServletRequestUtil;
 import com.bluemsun.vo.MemberVo;
@@ -35,7 +37,14 @@ public class GroupAdminController {
     public Map<String,Object> showMember(HttpServletRequest request){
     Map<String,Object> modelMap = new HashMap<>();
     String groupId = HttpServletRequestUtil.getString(request,"groupId");
-    List<MemberVo> memberList = memberDao.getMebmerList(groupId);
+    Integer pageSize = HttpServletRequestUtil.getInt(request,"pageSize");
+    Integer pageNum = HttpServletRequestUtil.getInt(request,"pageNum");
+    if(pageSize==0)pageSize=1;
+    if (pageNum==0)pageNum=15;
+    String search = HttpServletRequestUtil.getString(request,"search");
+    int total = memberDao.getMebmerListCount(groupId,search);
+    Page memberPage = new Page(pageNum,pageSize,total);
+    List<MemberVo> memberList = memberDao.getMebmerList2(groupId,search,memberPage.getStartIndex(),memberPage.getPageSize());
     modelMap.put("success",1);
     modelMap.put("info","获取用户列表成功");
     modelMap.put("memberList",memberList);
