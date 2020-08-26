@@ -24,6 +24,9 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
     private MemberDao memberDao;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if ("OPTIONS".equals(request.getMethod())){
+            return true;
+        }
         Map<String,Object> modelMap = new HashMap<>();
         String token = request.getHeader("token");
         String userString = jedisUtilStrings.get(token);

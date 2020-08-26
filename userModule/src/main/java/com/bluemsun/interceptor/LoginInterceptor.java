@@ -32,6 +32,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		if ("OPTIONS".equals(request.getMethod())){
+			return true;
+		}
 		String token = request.getHeader("token");
 		if (token!=null) {
 			if (jedisUtilKeys.exists(token))

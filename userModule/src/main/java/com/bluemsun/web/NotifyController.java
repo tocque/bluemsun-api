@@ -24,7 +24,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/personPage")
-@CrossOrigin
 public class NotifyController {
     @Autowired
     private UserDao userDao;

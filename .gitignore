@@ -125,3 +125,4 @@ build/
 .vscode/
 /.idea/
 /userModule/src/test/
+/userModule/target/

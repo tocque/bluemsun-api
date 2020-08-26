@@ -63,7 +63,6 @@ public class EmailController {
 //    return modelMap;
 //    }
     @RequestMapping(value = "/EmailCheckString",method = RequestMethod.GET)
-    @CrossOrigin
     @ResponseBody
     public Map<String,Object> sendCheckString (HttpServletRequest request){
         Map<String,Object> modelMap =new HashMap<>();

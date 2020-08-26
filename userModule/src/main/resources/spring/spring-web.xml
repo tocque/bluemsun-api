@@ -33,6 +33,12 @@
      <!--4.扫描web相关的bean-->
     <context:component-scan base-package="com.bluemsun.web" />
     <mvc:interceptors>
+<!--        跨域请求-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean id="HeaderInterceptor"
+                  class="com.bluemsun.interceptor.HeaderInterceptor"/>
+        </mvc:interceptor>
     <!-- 校验是否已登录的拦截器 -->
     <mvc:interceptor>
         <mvc:mapping path="/personPage/**" />

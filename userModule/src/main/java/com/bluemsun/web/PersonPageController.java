@@ -18,7 +18,6 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
-@CrossOrigin
 @Controller
 @RequestMapping("/personPage")
 public class PersonPageController {
@@ -108,6 +107,7 @@ public class PersonPageController {
         jedisUtilStrings.setEx(token,30*24*60*60,JSON.toJSONString(user));
         modelMap.put("success",1);
         modelMap.put("info","用户名更新成功");
+        modelMap.put("user",user);
         return modelMap;
     }
 }

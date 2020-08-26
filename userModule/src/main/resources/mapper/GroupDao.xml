@@ -3,8 +3,8 @@
 <mapper namespace="com.bluemsun.dao.GroupDao">
 
     <insert id="insert">
-        insert into tb_group(group_id,group_name)
-        values(#{groupId},#{name})
+        insert into tb_group(group_id,group_name,create_time)
+        values(#{groupId},#{name},now())
     </insert>
     <update id="updateGroup">
         update tb_group
@@ -29,5 +29,6 @@
         select g.group_name,g.group_id,g.json_file,g.md5,m.type
         from tb_group g,tb_member m
         where m.user_id = #{userId} and m.group_id = g.group_id
+        order by create_time DESC
     </select>
 </mapper>
