@@ -48,6 +48,9 @@ public class GroupAdminController {
     List<MemberVo> memberList = memberDao.getMebmerList2(groupId,search,memberPage.getStartIndex(),memberPage.getPageSize());
     modelMap.put("success",1);
     modelMap.put("info","获取用户列表成功");
+    modelMap.put("pages",memberPage.getTotalPage());
+    modelMap.put("pageNum",memberPage.getPageNum());
+    modelMap.put("total",memberPage.getTotalRecord());
     modelMap.put("memberList",memberList);
     return modelMap;
 }
