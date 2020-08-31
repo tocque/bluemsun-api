@@ -43,4 +43,10 @@
         and (g.group_id like "%"#{search}"%" or g.group_name like "%"#{search}"%")
         </if>
     </select>
+    <select id="getGroup" resultType="com.bluemsun.vo.GroupVo">
+        select g.group_name,g.group_id,g.json_file,g.md5,m.type
+        from tb_group g,tb_member m
+        where m.user_id = #{userId} and m.group_id = g.group_id
+        and g.group_id = #{groupId}
+    </select>
 </mapper>

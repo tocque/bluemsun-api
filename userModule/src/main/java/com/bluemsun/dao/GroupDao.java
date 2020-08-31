@@ -20,4 +20,6 @@ public interface GroupDao {
     int updateFile(@Param("groupId") String groupId, @Param("md5") String md5, @Param("s") String s);
 
     int getGroupByUserCount(@Param("userId") Integer userId, @Param("search") String search);
+
+    GroupVo getGroup(@Param("groupId") String groupId, @Param("userId") Integer userId);
 }

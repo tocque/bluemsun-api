@@ -7,6 +7,7 @@ import com.bluemsun.cache.JedisUtil;
 import com.bluemsun.dao.GroupDao;
 import com.bluemsun.dao.MemberDao;
 import com.bluemsun.entity.Group;
+import com.bluemsun.entity.Member;
 import com.bluemsun.entity.Page;
 import com.bluemsun.entity.User;
 import com.bluemsun.util.HttpServletRequestUtil;
@@ -98,6 +99,27 @@ public class GroupController {
         modelMap.put("groupList", groupList);
         modelMap.put("success", 1);
         modelMap.put("info", "获取成功");
+        return modelMap;
+    }
+
+    @RequestMapping(value = "/getJSON", method = RequestMethod.GET)
+    public Map<String, Object> getGroup(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        String token = request.getHeader("token");
+        String userString = jedisUtilStrings.get(token);
+        JSONObject userJson = JSON.parseObject(userString);
+        User user = JSON.toJavaObject(userJson, User.class);
+        String groupId = HttpServletRequestUtil.getString(request,"groupId");
+        Member member=memberDao.getMember(groupId,user.getUserId());
+        if(member!=null){
+        GroupVo group = groupDao.getGroup(groupId,user.getUserId());
+        modelMap.put("group", group);
+        modelMap.put("success", 1);
+        modelMap.put("info", "获取成功");}
+        else {
+            modelMap.put("success", 0);
+            modelMap.put("info", "获取失败");
+        }
         return modelMap;
     }
 
