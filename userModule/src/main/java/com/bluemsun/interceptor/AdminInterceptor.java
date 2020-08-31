@@ -34,6 +34,18 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
         User user = JSON.toJavaObject(userJSON,User.class);
         String groupId = HttpServletRequestUtil.getString(request,"groupId");
         Member member=memberDao.getMember(groupId,user.getUserId());
+        int userId = HttpServletRequestUtil.getInt(request,"userId");
+        if(userId!=0){
+            if(user.getUserId()==userId){
+                response.setCharacterEncoding("utf8");
+                PrintWriter out = response.getWriter();
+                modelMap.put("success",0);
+                modelMap.put("info","不能操作自己");
+                String jsonString = JSON.toJSONString(modelMap);
+                out.println(jsonString);
+                return false;
+            }
+        }
         if(member==null||member.getType()==3||member.getType()==2){
             PrintWriter out = response.getWriter();
             out.print("noAdmin");

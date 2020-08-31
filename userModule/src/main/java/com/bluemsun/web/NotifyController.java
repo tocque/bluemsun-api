@@ -51,6 +51,9 @@ public class NotifyController {
         int total = updateDao.getListCount(user.getUserId());
         Page updatePage = new Page(pageNum,pageSize,total);
         List<NotifyVo> notifyVoList = updateDao.getOneUserNotify(user.getUserId(),updatePage.getStartIndex(),updatePage.getPageSize());
+        modelMap.put("pages",updatePage.getTotalPage());
+        modelMap.put("pageNum",updatePage.getPageNum());
+        modelMap.put("total",updatePage.getTotalRecord());
         modelMap.put("notifyList",notifyVoList);
         modelMap.put("success",1);
         modelMap.put("info","消息列表获取成功");

@@ -96,6 +96,9 @@ public class GroupController {
         int total = groupDao.getGroupByUserCount(user.getUserId(),search);
         Page groupPage = new Page(pageNum,pageSize,total);
         List<GroupVo> groupList = groupDao.getGroupByUser(user.getUserId(),search,groupPage.getStartIndex(),groupPage.getPageSize());
+        modelMap.put("pages",groupPage.getTotalPage());
+        modelMap.put("pageNum",groupPage.getPageNum());
+        modelMap.put("total",groupPage.getTotalRecord());
         modelMap.put("groupList", groupList);
         modelMap.put("success", 1);
         modelMap.put("info", "获取成功");
@@ -131,6 +134,12 @@ public class GroupController {
         String userString = jedisUtilStrings.get(token);
         JSONObject userJson = JSON.parseObject(userString);
         User user = JSON.toJavaObject(userJson, User.class);
+        Member member=memberDao.getMember(groupId,user.getUserId());
+        if (member.getType()==0){
+            modelMap.put("success",0);
+            modelMap.put("info","不能操作自己");
+            return modelMap;
+        }
         memberDao.deleteMember(groupId, user.getUserId());
         modelMap.put("success", 1);
         modelMap.put("info", "退出成功");
