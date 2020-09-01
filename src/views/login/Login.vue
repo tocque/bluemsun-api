@@ -2,13 +2,16 @@
   <div class="login-wrapper">
     <div class="login-container">
       <div class="mb-22 title">
-        <span>BLUEMSUN-API</span>
+        <span v-if="!error">BLUEMSUN-API</span>
+        <v-alert v-model="error" dismissible dense type="error">
+          请输入邮箱和密码
+        </v-alert>
       </div>
       <div class="mb-22">
         <v-text-field
           v-model="username"
           counter
-          label="账号"
+          label="邮箱"
           :autofocus="true"
           clearable
         ></v-text-field>
@@ -23,16 +26,22 @@
           @click:append="showpassword = !showpassword"
         ></v-text-field>
       </div>
-      <div class="mb-2">
+      <div class="mb-22">
         <v-btn block color="secondary" @click="handleLogin" large dark
           >登录</v-btn
         >
+      </div>
+      <div class="router">
+        <router-link to="regist">注册账号</router-link>
+        <router-link to="regist">找回密码</router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { login } from "@/api/user/sign";
+// import { ipcRenderer } from "electron";
 export default {
   data() {
     return {
@@ -41,11 +50,44 @@ export default {
       password: "Password",
       loading: false,
       loader: null,
+      error: false,
     };
+  },
+  mounted() {
+    // window.ipcRenderer.send("loginPageShow", "123")
+    // ipcRenderer.send("loginPageShow", "123");
+    // const ws = new WebSocket("ws://192.168.199.248:8080/api/notify/4");
+    // ws.onopen = () => {
+    //   ws.send("发送数据");
+    // };
+
+    // ws.onmessage = (evt) => {
+    //   console.log(evt);
+    // };
   },
   methods: {
     handleLogin() {
-      console.log("登录");
+      this.error = false;
+      if (
+        this.username === null ||
+        this.password === null ||
+        this.username === "" ||
+        this.password === ""
+      ) {
+        this.error = true;
+      } else {
+        const formdata = new FormData();
+        formdata.append("username", this.username);
+        formdata.append("password", this.password);
+        login(formdata).then((res) => {
+          if (res.success === 1) {
+            this.$store.commit("login", res);
+            this.$router.replace("/list");
+          } else {
+            this.$message.error(res.info || "登录失败");
+          }
+        });
+      }
     },
   },
 };
@@ -75,10 +117,18 @@ export default {
             font-size 38px
             font-weight 600
             color #424242
+            height 22px
             padding-bottom 12px
         .mb-22
             margin-bottom 22px
         & >>> input:-internal-autofill-previewed,
         & >>> input:-internal-autofill-selected
                 transition: background-color 5000s ease-in-out 0s !important;
+        .router
+          text-align center
+          a
+            color #3f2600
+            text-decoration none
+            &:first-child
+              margin-right 8px
 </style>

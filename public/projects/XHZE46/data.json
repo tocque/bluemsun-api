@@ -1,0 +1,82 @@
+{
+    "projectInfo": {
+        "title": "水水水",
+        "index": "mota.pw",
+        "github": "github.com/tensforest/mota.pw",
+        "intro": "这是个水项目"
+    },
+    "globals": {
+        "baseURL": "mota.pw/water",
+        "tags": [
+            {
+                "id": "114514",
+                "comment": "xxxx",
+                "name": "用 户",
+                "filename": "user"
+            }
+        ],
+        "meta": {
+            "javascript-axios.js": {
+                "to": {
+
+                }
+            }
+        },
+        "mixins": [
+            {
+                "id": "1919810"
+
+            }
+        ]
+    },
+    "interfaces": [
+        {
+            "id": 1,
+            "name": "xxxx",
+            "uri": "/user/{id}",
+            "method": "POST",
+            "headers": {
+                "content-type": "xxxx"
+            },
+            "requestParams": {
+                "aaa": {
+                    "type": "array",
+                    "subtype": "info",
+                    "required": false,
+                    "comment": "啊啊啊"
+                },
+                "bbb": {
+                    "type": "string",
+                    "comment": "get"
+                }
+            },
+            "response": {
+                "code": {
+                    "type": "int", 
+                    "enum": [1, 2, 3],
+                    "comment": "1代表成功"
+                }
+            },
+            "comment": "rua, 不要啊",
+            "tag": "114514",
+            "meta": {
+                "java.class": "userxxx"
+            },
+            "mixin": [
+                "1919810"
+            ]
+        }
+    ],
+    "types": {
+        "info": {
+            "type": "object",
+            "props": {
+                "aaa": "string",
+                "bbb": {
+                    "type": "array",
+                    "subtype": "int"
+                }
+            }
+        }
+    }
+}

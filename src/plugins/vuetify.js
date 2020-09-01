@@ -1,16 +1,16 @@
 import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
+import Vuetify from 'vuetify/lib'
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
   theme: {
-      options: {
-        customProperties: true,
-      },
+    options: {
+      customProperties: true,
+    },
     themes: {
       light: {
-        primary: '#ee44aa',
+        primary: '#333333',
         secondary: '#424242',
         accent: '#82B1FF',
         error: '#FF5252',
