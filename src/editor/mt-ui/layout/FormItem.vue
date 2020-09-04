@@ -24,6 +24,7 @@ export default {
     display: flex;
     align-items: baseline;
     &__content {
+        display: flex;
         padding: 10px;
     }
 }

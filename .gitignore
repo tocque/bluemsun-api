@@ -126,3 +126,7 @@ build/
 /.idea/
 /userModule/src/test/
 /userModule/target/
+
+### test ###
+
+test/

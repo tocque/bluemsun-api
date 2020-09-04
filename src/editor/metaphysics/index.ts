@@ -1,3 +1,4 @@
 import Editor from "./Editor.vue"
 
-export default Editor;
+export * from "./schema"
+export default Editor

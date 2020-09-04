@@ -57,22 +57,18 @@ function createWindow() {
   win = new BrowserWindow({
     width: 900,
     height: 640,
-    // frame: false,
-    modal: true,
-    alwaysOnTop: true,
+    frame: false,
     darkTheme: true,
-    resizable: false,
+    // resizable: false,
     transparent: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: (process.env
-          .ELECTRON_NODE_INTEGRATION as unknown) as boolean
+          .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
+      webSecurity: false
     }
   })
-
-  console.log(process.env
-    .ELECTRON_NODE_INTEGRATION);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -86,10 +82,20 @@ function createWindow() {
 
   listenIPC(win);
 
-  let winHandler = {};
+  let winHandler: Map<string, BrowserWindow> = new Map;
+  
+  win.on('close', () => {
+    winHandler.forEach(e => e.close());
+    winHandler.clear();
+  })
+
+  win.on('closed', () => {
+    console.log('closed');
+    win = null
+  })
 
   ipcMain.on('open-editor', (event, { id, type }) => {
-    if (winHandler[id]) return;
+    if (winHandler.has(id)) return;
     const editor = new BrowserWindow({
       width: 900,
       height: 640,
@@ -107,23 +113,25 @@ function createWindow() {
       event.preventDefault();
     })
 
-    editor.once('close', () => {
-      winHandler[id] = undefined;
+    editor.on('close', () => {
+      winHandler.delete(id);
     })
 
     listenIPC(editor);
 
+    const param = `?type=${type}&id=${id}`;
+
     if (process.env.WEBPACK_DEV_SERVER_URL) {
       // Load the url of the dev server if in development mode
-      editor.loadURL(process.env.WEBPACK_DEV_SERVER_URL + `editor.html?type=${type}` as string)
+      editor.loadURL(process.env.WEBPACK_DEV_SERVER_URL + "editor.html" + param as string)
       if (!process.env.IS_TEST) editor.webContents.openDevTools()
     } else {
       createProtocol('app')
       // Load the index.html when not in development
-      editor.loadURL(`app://./editor.html?type=${type}`)
+      editor.loadURL("app://./editor.html"+param)
     }
 
-    winHandler[id] = editor;
+    winHandler.set(id, editor);
   })
 }
 

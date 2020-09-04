@@ -46,6 +46,8 @@ export default {
     &__content {
         width: 100%;
         height: calc(100% - 52px);
+        display: flex;
+        flex-direction: column;
     }
 }
 </style>

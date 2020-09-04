@@ -1,18 +1,11 @@
+import { Schema } from "./schema" 
+
 let __wrongMark__ = false;
-
-type paramFn = ({field: string, vobj: any, cobj: comment}) => any
-
-interface comment {
-    _type: string
-    _data: string | {[key: string]: comment} | Function
-    _string: boolean | paramFn 
-    _leaf?: boolean | paramFn
-}
 
 interface treenode {
     field: string
     data: any
-    comment: comment
+    comment: Schema
     key: string
     children?: treenode[] 
 }
@@ -20,20 +13,12 @@ interface treenode {
 /**
  * 注释对象的默认值
  */
-const defaultcobj: comment = {
+const defaultcobj: Schema = {
     // 默认是文本域
-    _type: 'textarea',
-    _data: '',
-    _string: ({ vobj }) => {
-        return (typeof (vobj) === typeof ('')) && vobj[0] === '"';
-    },
-    // 默认情况下 非对象和数组的视为叶节点
-    _leaf: ({ vobj }) => {
-        if (vobj === null || vobj === undefined) return true;//null,undefined
-        if (typeof (vobj) === typeof ('')) return true;//字符串
-        if (Object.keys(vobj).length === 0) return true;//数字,true,false,空数组,空对象
-        return false;
-    },
+    type: 'text',
+    name: 'undefined',
+    comment: '未定义在schema中的项',
+    attr: {}
 }
 
 /**
@@ -50,8 +35,9 @@ const defaultcobj: comment = {
  * @param comment 注释文件
  * @returns 对象树根节点
  */
-export const buildTree = function(data: any, comment: comment): treenode {
+export const buildTree = function(data: any, comment: Schema): treenode {
     const root = { field: "", data, comment, key: ":root" }
+    console.log(comment);
     /**
      * cobj = Object.assign({}, defaultcobj, pcobj['_data'][ii])
      * 每一项若未定义,就从defaultcobj中取
@@ -63,7 +49,7 @@ export const buildTree = function(data: any, comment: comment): treenode {
      * @param key 节点属性名
      */
     const createNode = function(parent: treenode, 
-        pcomment: comment["_data"],
+        pcomment: Schema["children"],
         key: string) {
         const node = {
             field: parent.field + `[${key}]`,
@@ -72,24 +58,13 @@ export const buildTree = function(data: any, comment: comment): treenode {
             comment: null
         }
         if (pcomment) {
-            // cobj存在时直接取
-            if (pcomment[key]) node.comment = pcomment[key];
-            // 当其为函数时代入参数算出cobj,
-            else if (pcomment instanceof Function) node.comment = pcomment(key);
-            // 不存在时只取defaultcobj
+            // cobj存在时直接取, 不存在时只取defaultcobj
+            node.comment = pcomment[key] || pcomment["@default"];
+        }
+        if (typeof node.comment === 'string') {
+            node.comment = comment.attr.types[node.comment.slice(1)];
         }
         node.comment = Object.assign({}, defaultcobj, node.comment);
-        const args = {
-            field: node.field, vobj: node.data, cobj: node.comment
-        }
-        // 当cobj的参数为函数时,代入args算出值
-        for (let key in node.comment) {
-            if (key === '_data') continue;
-            if (node.comment[key] instanceof Function) {
-                node.comment[key] = node.comment[key](args, data);
-            }
-        }
-        node.data = args.vobj;
         return node;
     }    
     /**
@@ -98,12 +73,14 @@ export const buildTree = function(data: any, comment: comment): treenode {
      * @param pcfield 父结点的注释域
      */
     const recursionParse = function (parent: treenode) {
+        console.log(parent);
         parent.children = [];
         let keysInOrder = {};
         const voidMark = {};
-        const cchildren = (parent.comment || {})['_data'];
+        const cchildren = (parent.comment || {}).children;
         // 1. 按照pcobj排序生成
-        for (let ii in cchildren as {[key: string]: comment}) {
+        for (let ii in cchildren as {[key: string]: Schema}) {
+            if (ii == "@default") continue;
             keysInOrder[ii] = voidMark;
         }
         // 2. 对每个pvobj且不在pcobj的，再添加到最后
@@ -113,19 +90,19 @@ export const buildTree = function(data: any, comment: comment): treenode {
             //    事实上能执行到这一步工程没崩掉打不开,就继续吧..
             if (keysInOrder[key] === voidMark) {
                 if (!__wrongMark__) {
-                    const msg = `comment和data不匹配, 请在群 HTML5造塔技术交流群 959329661 内反馈, 失配数据域: ${parent.field}['${key}']`
-                    window.onerror(msg, "control_list.js");
+                    const msg = `comment和data不匹配, 失配数据域: ${parent.field}['${key}']`
+                    window.onerror(msg, "tree.js");
                     __wrongMark__ = true;
                 }
                 parent.data[key] = null;
             }
             const node = createNode(parent, cchildren, key)
             parent.data[key] = node.data;
-            // 标记为_hide的属性不展示
-            if (node.comment._hide) continue;
+            // 标记为hide的属性不展示
+            if (node.comment.hide) continue;
             parent.children.push(node);
             // 不是叶节点时, 插入展开的标记并继续遍历, 此处可以改成按钮用来添加新项或折叠等
-            if (!node.comment._leaf) recursionParse(node);
+            if (node.comment.children && node.comment.children.length > 0) recursionParse(node);
         }
     }
     // 开始遍历

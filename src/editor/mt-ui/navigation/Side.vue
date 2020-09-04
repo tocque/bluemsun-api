@@ -132,10 +132,8 @@ export default {
         }
     }
     .container {
-        left: 5px;
-        right: 2px;
-        bottom: 0;
-        top: 45px;
+        padding-left: 5px;
+        padding-right: 2px;
     }
     &.transition {
         // &.collapsed {

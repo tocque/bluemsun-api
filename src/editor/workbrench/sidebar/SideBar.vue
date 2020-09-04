@@ -1,18 +1,22 @@
 <template>
-    <mt-side class="left" :tucked.sync="leftCollapsed">
+    <mt-side :tucked="tucked" @update:tucked="(e) => $emit('update:tucked', e)">
         <script-tree active ref="scriptTree" @openTab="openTab"></script-tree>
-        <project-setting></project-setting>
+        <source-control></source-control>
+        <output-config></output-config>
     </mt-side>
 </template>
 
 <script>
 import ScriptTree from "./ScriptTree"
-import ProjectSetting from "./ProjectSetting"
+import SourceControl from "./SourceControl"
+import OutputConfig from "./OutputConfig" 
 
 export default {
+    props: {
+        tucked: { type: Boolean }
+    },
     data() {
         return {
-            leftCollapsed: true
         }
     },
     methods: {
@@ -21,7 +25,7 @@ export default {
         }
     },
     components: {
-        ScriptTree, ProjectSetting
+        ScriptTree, SourceControl, OutputConfig
     }
 }
 </script>

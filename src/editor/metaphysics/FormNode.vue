@@ -7,12 +7,12 @@ export default {
     render() {
         const comment = this.comment;
         return (
-            <div class="control-node" 
-                title={ comment._data+this.data.field }
+            <div class={"control-node "+this.difftype} 
+                title={ comment.comment+this.data.field }
                 field={ this.data.field }
             >
                 <div class="control-content">
-                    <span class="comment">{ comment._name }</span>
+                    <span class="comment">{ comment.name }</span>
                     <div class="control-input">
                         { exec(this.inner) }
                         { this.external
@@ -44,7 +44,7 @@ export default {
         }
     },
     created() {
-        const type = this.data.comment._type;
+        const type = this.data.comment.type;
         const _input = getInput(type);
         ["inner", "external", "defaultValidate", "init"].forEach((e) => {
             if (_input[e]) this[e] = _input[e].bind(this);
@@ -101,7 +101,18 @@ export default {
 
 <style lang="less">
 .control-node {
+    padding: 5px 5px 5px 20px;
     width: 100%;
+    border-left: 3px;
+    &.modify {
+        border-left: solid #0c7d9d;
+    }
+    &.untracked {
+        border-left: solid #587c0c;
+    }
+    &.deleted {
+        border-left: solid #94151B;
+    }
     .control-content {
         display: flex;
         justify-content: space-between;

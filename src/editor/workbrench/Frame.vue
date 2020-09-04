@@ -19,8 +19,8 @@
             </div>
         </header>
         <main class="mainPanel">
-            <side-bar></side-bar>
-            <core-editor ref="metaphysics"></core-editor>
+            <side-bar class="left" :tucked.sync="leftTucked"></side-bar>
+            <core-editor ref="metaphysics" class="mid" :class="{ tucked: leftTucked }"></core-editor>
         </main>
         <footer id="statusBar">
             <ul ref="left" id="statusLeft">
@@ -36,7 +36,7 @@ import service from "../service"
 import store from "../store"
 import SideBar from "./sidebar"
 import CoreEditor from "../metaphysics"
-import { mapState, mapGetters } from "vuex"
+import { mapState, mapGetters, mapActions } from "vuex"
 import Vue from "vue"
 
 import "./dark.css"
@@ -46,6 +46,7 @@ const { ipcRenderer } = require('electron');
 export default {
     data() {
         return {
+            leftTucked: false,
             statusLeft: [],
             messageType: 'normal',
             message: '',
@@ -61,7 +62,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters('$project', {
+        ...mapGetters({
             projectName: 'name', // 与标题相绑定
         })
     },
@@ -104,8 +105,14 @@ export default {
             }
             parent.appendChild($el);
         },
-        openEditor(node, type) {
-            return this.$refs.metaphysics.import(node, type);
+        ...mapActions({
+            _openEditor: openEditor
+        }),
+        openEditor(id, node) {
+            return this._openEditor({ 
+                editor: this.$refs.metaphysics,
+                id, node 
+            })
         },
         maximize() {
             ipcRenderer.send('window-maximize');
@@ -261,9 +268,16 @@ header {
     margin: 0 auto;
     display: block;
     position: absolute;
-    // &.active {
-    //     display: block;
-    // }
+    .left {
+        left: 0px;
+    }
+    .mid {
+        left: 330px;
+        right: 0px;
+        &.tucked {
+            left: 50px;
+        }
+    }
 }
 
 .left, .mid, .right {
@@ -283,16 +297,5 @@ header {
 .right {
     z-index: 6;
     right: 0px;
-}
-
-.main-side-layout {
-    .left {
-        left: 0px;
-        width: 330px;
-    }
-    .mid {
-        left: 330px;
-        right: 0px;
-    }
 }
 </style>

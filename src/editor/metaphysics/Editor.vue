@@ -1,89 +1,86 @@
 <template>
     <div v-show="active" class="code-editor">
         <div class="multi-container" ref="container">
-            <form-tree :commentsrc="comment"
-                ref="main" @changeNode.native="onchange($event)"
+            <form-tree ref="core" @changeNode.native="onchange($event)"
             ></form-tree>
         </div>
-        <status-item v-if="nostatus !== ''" v-show="active" left>
-            <i class="codicon codicon-error"></i> {{ error }}
-            <i class="codicon codicon-warning"></i> {{ warn }}
-        </status-item>
         <status-item v-if="nostatus !== ''" v-show="active">Ln {{ line }}, Col {{col}}</status-item>
     </div>
 </template>
 
 <script>
 import FormTree from "./FormTree"
+import { registerSchema, getSchema } from "./schema"
+import Model from './model'
 
 export default {
     name: "code-editor",
     props: {
         "active": { default: true, type: Boolean },
-        "text": { default: "text", type: String },
+        "data": { default: "data", type: String },
         "nostatus": { default: false },
         "shortcut": { default: () => [] },
     },
     data() {
         return {
+            schema: "",
+            model: {},
             line: 1,
             col: 1,
-            error: 0,
-            warn: 0,
+        }
+    },
+    computed: {
+        comment() {
+            return getSchema(this.schema);
         }
     },
     async mounted() {
-        // this.multi = monaco.editor.create(this.$refs.container, {
-        //     theme: editor.userdata.get('monacoTheme'),
-        //     mouseWheelScrollSensitivity: 0.6,
-        //     language: this.lang,
-        //     automaticLayout: true,
-        //     tabSize: 4
-        // });
-        // this.multi.onDidChangeModelContent(this.onedit.bind(this));
-        // this.multi.onDidChangeCursorPosition(this.oncursor.bind(this));
-        // if (this.shortcut.includes("save")) {
-        //     this.$regShortcut("s.ctrl", {
-        //         action: this.save.bind(this),
-        //         condition: () => this.active,
-        //         prevent: true,
-        //     })
-        // }
+        this.$regShortcut("s.ctrl", {
+            action: () => this.model.save(),
+            condition: () => this.active,
+            prevent: true,
+        })
     },
     methods: {
         setValue(value) {
-            this.multi.setValue(value);
+            this.model.setValue(value);
         },
         getValue(value) {
-            return this.multi.getValue(value);
+            return this.model.getValue(value);
         },
-        load(node) {
+        open(node, schema) {
+            console.log(node);
             if (!node.model) {
                 node.verison = 0;
-                node.model = createModel(node[this.text], this.lang)
+                node.model = new Model(node[this.data], schema)
             }
             this.node = node;
-            this.multi.setModel(node.model);
+            this.setModel(node.model);
         },
-        checkEdit(node) {
-            const editStack = node.model._commandManager;
-            return editStack.currentOpenStackElement ||
-                node.verison != editStack.past.length;
+        setModel(model) {
+            this.model = model;
+            this.schema = model.schema;
+            this.$refs.core.update(model.data, getSchema(model.schema));
         },
-        onedit(e) {
-            let error = 0, warn = 0;
-            const markers = monaco.editor.getModelMarkers();
-            for (let marker of markers) {
-                if (marker.severity < 2) continue;
-                else if (marker.severity < 6) warn++;
-                else error++;
-            }
-            this.error = error, this.warn = warn;
-            if (this.node) this.node.editted = this.checkEdit(this.node);
-        },
-        oncursor(e) {
-            this.line = e.position.lineNumber, this.col = e.position.column;
-        },
+        // checkEdit(node) {
+        //     const editStack = node.model._commandManager;
+        //     return editStack.currentOpenStackElement ||
+        //         node.verison != editStack.past.length;
+        // },
+        // onedit(e) {
+        //     let error = 0, warn = 0;
+        //     const markers = monaco.editor.getModelMarkers();
+        //     for (let marker of markers) {
+        //         if (marker.severity < 2) continue;
+        //         else if (marker.severity < 6) warn++;
+        //         else error++;
+        //     }
+        //     this.error = error, this.warn = warn;
+        //     if (this.node) this.node.editted = this.checkEdit(this.node);
+        // },
+        // oncursor(e) {
+        //     this.line = e.position.lineNumber, this.col = e.position.column;
+        // },
         save() {
             if (this.node.editted) {
                 this.node.verison = this.node.model._commandManager.past.length;
@@ -92,7 +89,13 @@ export default {
                 this.node[this.text] = this.node.model.getValue();
                 this.$emit('save', this.node);
             }
+        },
+        onchange() {
+            this.model
         }
+    },
+    components: {
+        FormTree
     }
 }
 </script>
@@ -100,5 +103,6 @@ export default {
 <style>
 .code-editor, .multi-container {
     height: 100%;
+    background: #1E1E1E;
 }
 </style>

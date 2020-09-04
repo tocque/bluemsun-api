@@ -1,6 +1,6 @@
 import axios from "axios"
 import store from "@/store/index"
-const BASE_URL = "http://192.168.199.229:8084/"
+const BASE_URL = "http://182.92.225.240:8080/bluemsun/"
 const http = axios.create({
     timeout: 1000 * 8,
     withCredentials: true,

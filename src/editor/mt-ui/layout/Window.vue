@@ -62,7 +62,7 @@ export default {
     &__foot {
         display: flex;
         justify-content: flex-end;
-        padding: 5x;
+        padding: 5px;
         .mt-btn {
             margin-right: 20px;
         }

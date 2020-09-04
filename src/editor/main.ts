@@ -2,7 +2,7 @@ import * as util from "./utils"
 import Config from "./config"
 import service from "./service"
 import * as fs from "./fs"
-import "./project"
+import "./codegen"
 
 import Vue from "vue"
 import View from "./workbrench"
@@ -11,6 +11,7 @@ const { ipcRenderer } = require('electron');
 
 import MtUI from "./mt-ui"
 import store from './store'
+import { registerSchema } from './metaphysics'
 
 Vue.use(MtUI)
 
@@ -57,8 +58,8 @@ const bluemsunApi = new class BluemsunApi {
      * 打开工程
      * @param id 工程id
      */
-    async openProject(id: string) {
-        return store.dispatch("$project/open", { id });
+    async openProject(id: string, type: number) {
+        return store.dispatch("open", { id });
     }
 }
 
@@ -88,4 +89,12 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
 // @ts-ignore
 window.bluemsunApi = bluemsunApi;
 
-bluemsunApi.openProject("XHZE46");
+const [ type, id ] = [2, "XHZE46"];
+    // window.location.search.slice(1).split('&');
+Promise.all(["globals", "main"].map((name) => {
+    return fetch(`./schema/${name}.json`)
+        .then(e => e.json())
+        .then(schema => registerSchema(name, schema))
+})).then(() => {
+    bluemsunApi.openProject(id, type);
+})

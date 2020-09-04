@@ -1,0 +1,78 @@
+{
+    "type": "root",
+    "typedef": {
+        "type": {
+            "type": "key-value",
+            "children": {
+                "@default": "@type"
+            }
+        }
+    },
+    "children": {
+        "id": {
+            "hide": true
+        },
+        "name": {
+            "name": "接口名称",
+            "type": "text"
+        },
+        "uri": {
+            "name": "uri",
+            "type": "text"
+        },
+        "method": {
+            "name": "请求方法",
+            "type": "select",
+            "options": [
+                "GET",
+                "POST",
+                "PATCH",
+                "PUT",
+                "UPDATE",
+                "DELETE"
+            ]
+        },
+        "headers": {
+            "name": "请求头",
+            "type": "key-value",
+            "children": {
+                "@default": {
+                    "type": "meta"
+                }
+            }
+        },
+        "requestParams": {
+            "name": "请求参数",
+            "type": "key-value",
+            "children": {
+                "@default": "@type"
+            }
+        },
+        "response": {
+            "name": "响应参数",
+            "type": "key-value",
+            "children": {
+                "@default": "@type"
+            }
+        },
+        "comment": {
+            "name": "说明",
+            "type": "text"
+        },
+        "tag": {
+            "hide": true
+        },
+        "mixin": {
+            "hide": true
+        },
+        "meta": {
+            "name": "meta",
+            "type": "key-value",
+            "children": {
+                "@default": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

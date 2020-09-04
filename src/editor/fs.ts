@@ -7,7 +7,7 @@ const { ipcRenderer } = require('electron');
 
 export const baseURL = ".";
 
-export class afios {
+export class Afios {
 
     baseURL: string
 
@@ -16,7 +16,7 @@ export class afios {
     }
 
     fixURL(url: string) {
-        if (this.baseURL == ".") return url;
+        if (this.baseURL == ".") return url.replace('\\', '/');
         else return path.resolve(this.baseURL, url);
     }
 
@@ -82,9 +82,18 @@ export class afios {
             });
         })
     }
+
+    async mkdir(path: string) {
+        return new Promise((res, rej) => {
+            fs.mkdir(this.fixURL(path), (err, data) => {
+                if (err) rej(err);
+                else res(data);
+            });
+        })
+    }
 }
 
-export const localfs = new afios(baseURL);
+export const localfs = new Afios(baseURL);
 
 let selectFileHook: (path: string) => void;
 

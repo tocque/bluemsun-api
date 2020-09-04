@@ -1,7 +1,7 @@
 import { createGuid, clone, resolvePath, encode64 } from "./utils";
 import { localfs } from "./fs"
 
-export default class Config {
+class Config {
     
     src: string
     config: {[key: string]: any}
@@ -32,6 +32,7 @@ export default class Config {
     
     async save() {
         try {
+            console.log(this.src, JSON.stringify(this.config, null, 4));
             await localfs.write(this.src,  JSON.stringify(this.config, null, 4) , 'utf-8')
         } catch (e) {
             window.onerror(`写入配置文件${this.src}失败, 错误信息: ${e}`, "config.js");
@@ -39,3 +40,10 @@ export default class Config {
         return this;
     }
 }
+
+// @ts-ignore
+Config.make = async function(src: string, obj: any) {
+    return localfs.write(this.src,  JSON.stringify(this.config, null, 4) , 'utf-8');
+}
+
+export default Config;

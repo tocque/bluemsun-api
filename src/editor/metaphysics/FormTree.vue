@@ -1,14 +1,10 @@
 <template>
     <div class="container form-tree">
-        <el-tree :data="tree"
-            :basePadding="10" ref="tree"
-            @node-contextmenu="openMenu"
-        >
+        <el-tree :data="tree" ref="tree" @node-contextmenu="openMenu">
             <form-node 
                 slot-scope="{ node, data }" :node="node" :data="data"
             ></form-node>
         </el-tree>
-        <context-menu ref="contextmenu"></context-menu>
     </div>
 </template>
 
@@ -18,34 +14,15 @@ import FormNode from "./FormNode.vue"
 
 export default {
     name: "form-tree",
-    props: ["commentsrc"],
     data() {
         return {
-            commentObj: {},
             tree: [],
         }
     },
     async created() {
-        this.commentObj = game.get(this.commentsrc);
+
     },
     mounted() {
-        this.$refs.contextmenu.inject([
-            {
-                text: "删除该项",
-                action: (e, item) => this.deleteItem(item),
-                vaildate: false
-            },
-            {
-                text: "编辑该项",
-                action: (e, item) => this.editItem(item),
-                vaildate: false
-            },
-            {
-                text: "插入新项",
-                action: (e, item) => this.insertItem(item),
-                vaildate: false
-            }
-        ])
     },
     methods: {
         async deleteItem(item) {
@@ -60,18 +37,13 @@ export default {
             this.commentObj
             await game.post(this.commentsrc+"/delete", item.field);
         },
-        update(data) {
+        update(data, comment) {
             this.data = data;
-            this.tree = buildTree(data, this.commentObj).children;
+            this.tree = buildTree(data, comment).children;
         },
         /** @param {MouseEvent} e */
         openMenu(e, item) {
             this.$refs.contextmenu.open(e, item);
-        }
-    },
-    watch: {
-        commentsrc(newsrc) {
-            this.commentObj = game.get(newsrc);
         }
     },
     components: {
@@ -82,8 +54,7 @@ export default {
 
 <style lang="less">
 .el-tree {
-    max-width: 400px;
-    background-color: #222;
+    // background-color: #222;
     padding: 5px 0;
     .el-tree-node {
         outline: none;
@@ -116,5 +87,8 @@ export default {
     &.workspace-tree .el-tree-node__content {
         cursor: pointer;
     }
+}
+.form-tree .el-tree-node__content {
+    padding: 0px;
 }
 </style>

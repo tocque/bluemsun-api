@@ -1,13 +1,14 @@
 {
+    "groupName": "高三数学特训",
+    "groupId": "XHZE46",
     "jsonFile": "jsonStorage/advceefeFWDCSAZ.JSON",
     "md5": "asdasdade23edwscsdcs",
     "type": 2,
-    "setting": {
-        "outputter": [
-            {
-                "transpiler": "javascript-axios",
-                "path": "./test/frontend" 
-            }
-        ]
-    }
+    "outputTasks": [
+        {
+            "name": "frontend",
+            "transpiler": "javascript-axios",
+            "dest": "./test/frontend" 
+        }
+    ]
 }

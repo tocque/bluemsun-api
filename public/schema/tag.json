@@ -1,0 +1,17 @@
+{
+    "type": "root",
+    "children": {
+        "id": {
+            "hide": true
+        },
+        "name": {
+            "type": "string"
+        },
+        "comment": {
+            "type": "string"
+        },
+        "filename": {
+            "type": "string"
+        }
+    }
+}

@@ -17,15 +17,15 @@ export default function (type) {
                 return (<select vModel={ this.value } vOn:change={ this.onchange }>{ options }</select>);
             },
             validate(value) { // 验证时更新选项
-                if (typeof this.comment._options === "function") {
-                    this.options = this.comment._options();
+                if (typeof this.comment.options === "function") {
+                    this.options = this.comment.options();
                 }
                 return this.options.includes(value);
             },
             init(data, comment) {
-                if (typeof comment._options === "function") {
-                    this.options = comment._options();
-                } else this.options = comment._options;
+                if (typeof comment.options === "function") {
+                    this.options = comment.options();
+                } else this.options = comment.options;
                 return data;
             }
         }
@@ -124,13 +124,37 @@ export default function (type) {
                 return JSON.stringify(data);
             }
         }
-        case "script": return {
-
+        case "key-value": return {
+            inner() {
+                return (
+                    <mt-icon 
+                        class="add-btn"
+                        icon="diff-added" 
+                        title="新增一项"
+                        vOn:click={ () => this.addChild() }
+                    ></mt-icon>
+                )
+            },
+            methods: {
+                addChild() {
+                    const field = this.data.field + "[]", value = this.value;
+                    this.$el.dispatchEvent(new CustomEvent("changeNode", {
+                        detail: { field, value },
+                        bubbles: true,
+                    }));
+                }
+            }
         }
-        case "image": return {
-
+        case "meta": return {
+            inner() { 
+                return [
+                    <input class="mt-input" type="text" vModel={ this.value } vOn:change={ this.onchange }/>,
+                    ":",
+                    <input class="mt-input" type="text" vModel={ this.value } vOn:change={ this.onchange }/>
+                ]
+            }
         }
-        case "music": return {
+        case "typedef": return {
 
         }
         case "object": return {

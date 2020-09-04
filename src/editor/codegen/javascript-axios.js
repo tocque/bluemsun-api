@@ -64,22 +64,22 @@ export function ${value.name} (${lparams.concat(params).map(([v]) => v).join(', 
 `
     }
 
-    async generate(doc, fs) {
+    async generate(doc, output) {
         const tasks = [];
         const config = Object.assign({
             to: "request",
             header: ""
         }, doc.globals.meta[this.name] || {});
-        const typeDefine = Object.entries(doc.types).reduce((str, [k, v]) => {
+        const typeDefine = Object.entries(doc.globals.types).reduce((str, [k, v]) => {
             return str + /* js */`
 /**
  * @typedef {${this.typeGenerate(v)}} ${k}
  */
             `;
         }, "");
-        tasks.push(fs.writeFile(typeDefine, config.to+'/types.d.ts'));
+        tasks.push(output(typeDefine, config.to+'/types.d.ts'));
         
-        const tags = doc.globals.tags.reduce((r, v) => (r[v.id] = v, r), {});
+        const tags = doc.tags.reduce((r, v) => (r[v.id] = v, r), {});
         const files = doc.interfaces.reduce((files, interf) => {
             if (!files[interf.tag]) {
                 files[interf.tag] = tags[interf.tag];
@@ -89,13 +89,13 @@ export function ${value.name} (${lparams.concat(params).map(([v]) => v).join(', 
             return files;
         }, {});
         Object.values(files).forEach((file) => {
-            tasks.push(fs.writeFile(/* JS */`
+            tasks.push(output(/* JS */`
 /**
  * @files ${file.filename}.js ${file.name} ${file.comment}
  */ 
 ${config.header}
 ${file.contents.join('\n')}
-            `, config.to+`${file.filename}.js`));
+            `, config.to+`/${file.filename}.js`));
         });
         return Promise.all(tasks);
     }

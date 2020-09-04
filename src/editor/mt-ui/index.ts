@@ -1,6 +1,7 @@
 import Button from './input/Button.vue';
 import Checkbox from './input/Checkbox.vue';
 import Search from './input/Search.vue';
+import Select from './input/Select.vue';
 import Switch from './input/Switch.vue';
 import Table from './input/Table.vue';
 
@@ -30,7 +31,7 @@ import "./icon/codicon-animations.css"
 
 const install = function(Vue) {
     [
-        Button, Checkbox, Search, Switch, Table,
+        Button, Checkbox, Search, Select, Switch, Table,
         Board, FormItem, Window,
         Side, SidePane, Tabs, View,
         Contextmenu, Icon, ImagePreviewer, ProgressBit,

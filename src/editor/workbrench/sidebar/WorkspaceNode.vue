@@ -4,7 +4,10 @@
             :icon="node.isLeaf ? icon : gapIcon"
         ></mt-icon>
         <slot></slot>
-        <mt-icon v-show="data.unsave" icon="circle-filled"></mt-icon>
+        <div class="indicator">
+            <mt-icon v-if="data.unsave" icon="circle-filled"></mt-icon>
+            <span v-else>{{ token }}</span>
+        </div>
     </span>
 </template>
 
@@ -12,6 +15,15 @@
 export default {
     name: "workspace-node",
     props: ["node", "data", "icon", "gapIcon"],
+    computed: {
+        token() {
+            return {
+                untracked: "U",
+                modified: "M",
+                deleted: "D",
+            }[this.data.modify] || '';
+        }
+    }
 }
 </script>
 

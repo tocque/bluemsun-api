@@ -1,6 +1,5 @@
 <style lang="less">
 .container {
-    position: absolute;
     overflow: auto;
     &:hover {
         overflow: auto;

@@ -28,8 +28,8 @@
       <span
         v-if="!node.isLeaf"
         @click.stop="handleExpandIconClick"
-        class="el-tree-node__expand-icon codicon"
-        :class="[{ expanded: expanded }, 'codicon-chevron-'+(expanded ? 'down' : 'right')]"
+        class="el-tree-node__expand-icon codicon codicon-chevron-right"
+        :class="{ expanded: expanded }"
       ></span>
       <mt-checkbox
         v-if="showCheckbox"

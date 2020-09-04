@@ -1,0 +1,40 @@
+{
+    "type": "root",
+    "typedef": {
+        "type": {
+            "type": "key-value",
+            "children": {
+                "@default": "@type"
+            }
+        }
+    },
+    "children": {
+        "title": {
+            "type": "text"
+        },
+        "index": {
+            "type": "text"
+        },
+        "github": {
+            "type": "text"
+        },
+        "intro": {
+            "type": "textarea"
+        },
+        "baseURL": {
+            "type": "text"
+        },
+        "meta": {
+            "type": "key-value",
+            "children": {
+                "@default": {
+                    "type": "text"
+                }
+            }
+        },
+        "types": "@type",
+        "mixins": {
+            "type": "key-value"
+        }
+    }
+}

@@ -3,7 +3,7 @@
         <li v-for="(tab, index) of tabs" :key="index"
             :title="tab.label" @click="switchTab(tab)"
             class="mt-tab" :class="{ active: chosen == tab }">
-            <slot name="tab" :tab="tab" :active="chosen == tab">{{ tab.label }}</slot>
+            <slot name="tab" :tab="tab" :index="index" :active="chosen == tab">{{ tab.label }}</slot>
         </li>
         <slot name="default"></slot>
     </ul>
