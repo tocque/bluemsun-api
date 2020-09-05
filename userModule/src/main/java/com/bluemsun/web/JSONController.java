@@ -63,7 +63,7 @@ public class JSONController {
             map.put("success",0);
             map.put("info","无权限");
         }
-        String realPath = "D:/java/apache-tomcat-8.5.39/webapps/jsonStorage";
+        String realPath = "/var/lib/tomcat8/webapps/jsonStorage";
 
         //map.put("projectServerPath",projectServerPath);
         //map.put("realPath",realPath);
