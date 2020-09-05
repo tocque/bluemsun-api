@@ -1,5 +1,5 @@
 <template>
-    <select :value="value" @change="$emit('change', $event)">
+    <select :value="value" @change="$emit('change', value)">
         <option v-for="option of options" :key="option.value" 
             :value="option.value"
         >{{ option.label }}</option>

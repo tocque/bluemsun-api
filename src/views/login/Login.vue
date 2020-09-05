@@ -1,6 +1,10 @@
 <template>
   <div class="login-wrapper">
     <div class="login-container">
+      <!-- <div class="menu">
+        <v-icon @click="minus">mdi-minus</v-icon
+        ><v-icon @click="close">mdi-close</v-icon>
+      </div> -->
       <div class="mb-22 title">
         <span v-if="!error">BLUEMSUN-API</span>
         <v-alert v-model="error" dismissible dense type="error">
@@ -32,8 +36,8 @@
         >
       </div>
       <div class="router">
-        <router-link to="regist">注册账号</router-link>
-        <router-link to="regist">找回密码</router-link>
+        <v-btn @click="handleToRegist" text>立即注册</v-btn>
+        <v-btn text>找回密码</v-btn>
       </div>
     </div>
   </div>
@@ -41,31 +45,28 @@
 
 <script>
 import { login } from "@/api/user/sign";
-// import { ipcRenderer } from "electron";
 export default {
   data() {
     return {
-      username: "",
+      username: "2544967914@qq.com",
       showpassword: false,
-      password: "Password",
+      password: "123123",
       loading: false,
       loader: null,
       error: false,
     };
   },
-  mounted() {
-    // window.ipcRenderer.send("loginPageShow", "123")
-    // ipcRenderer.send("loginPageShow", "123");
-    // const ws = new WebSocket("ws://192.168.199.248:8080/api/notify/4");
-    // ws.onopen = () => {
-    //   ws.send("发送数据");
-    // };
-
-    // ws.onmessage = (evt) => {
-    //   console.log(evt);
-    // };
-  },
   methods: {
+    handleToRegist() {
+      window.ipcRenderer.send("openRegist");
+      this.$router.push("regist");
+    },
+    minus() {
+      window.ipcRenderer.send("minus");
+    },
+    close() {
+      window.ipcRenderer.send("close");
+    },
     handleLogin() {
       this.error = false;
       if (
@@ -82,6 +83,7 @@ export default {
         login(formdata).then((res) => {
           if (res.success === 1) {
             this.$store.commit("login", res);
+            window.ipcRenderer.send("loginSuccess");
             this.$router.replace("/list");
           } else {
             this.$message.error(res.info || "登录失败");
@@ -92,7 +94,10 @@ export default {
   },
 };
 </script>
-
+<style lang="stylus">
+body,html
+  overflow hidden
+</style>
 <style lang="stylus" scoped>
 .login-wrapper
     position absolute
@@ -101,6 +106,7 @@ export default {
     bottom 0
     top 0
     background-color #f9fcff
+    overflow hidden
     .login-container
         position absolute
         width 500px
@@ -112,6 +118,12 @@ export default {
         border-radius 4px;
         padding 50px
         box-sizing border-box
+        .menu
+          position absolute
+          right 4px
+          top 4px
+          i
+            cursor pointer
         .title
             text-align center
             font-size 38px

@@ -196,7 +196,7 @@ export const mountJs = function(text: string) {
  * 将aa.bb或者["aa"]["bb"]转换为数组形式
  */
 export const resolvePath = function(route: string) {
-    return route.startsWith('["') 
-        ? route.slice(2, -2).split('"][""')
+    return route.startsWith('[') 
+        ? route.slice(1, -1).split('][')
         : route.split(".");
 }

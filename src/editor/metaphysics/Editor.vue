@@ -4,7 +4,6 @@
             <form-tree ref="core" @changeNode.native="onchange($event)"
             ></form-tree>
         </div>
-        <status-item v-if="nostatus !== ''" v-show="active">Ln {{ line }}, Col {{col}}</status-item>
     </div>
 </template>
 
@@ -36,8 +35,18 @@ export default {
     },
     async mounted() {
         this.$regShortcut("s.ctrl", {
-            action: () => this.model.save(),
+            action: () => this.model?.save(),
             condition: () => this.active,
+            prevent: true,
+        })
+        this.$regShortcut("z.ctrl", {
+            action: () => this.model?.undo(),
+            condition: () => this.active && this.model?.canUndo(),
+            prevent: true,
+        })
+        this.$regShortcut("y.ctrl", {
+            action: () => this.model?.redo(),
+            condition: () => this.active && this.model?.canRedo(),
             prevent: true,
         })
     },
@@ -48,35 +57,24 @@ export default {
         getValue(value) {
             return this.model.getValue(value);
         },
-        open(node, schema) {
-            console.log(node);
-            if (!node.model) {
-                node.verison = 0;
-                node.model = new Model(node[this.data], schema)
-            }
-            this.node = node;
-            this.setModel(node.model);
+        createModel(data, type, options) {
+            const model = new Model(data, type, options);
+            model.on("edit", () => {
+                if (this.model != model) return;
+                console.log(this.$refs);
+                this.$refs.core.update(model.data, getSchema(model.schema), (data) => model.renderDiff(data));
+            })
+            return model;
         },
         setModel(model) {
             this.model = model;
             this.schema = model.schema;
-            this.$refs.core.update(model.data, getSchema(model.schema));
+            this.$refs.core.update(model.data, getSchema(model.schema), (data) => model.renderDiff(data));
         },
         // checkEdit(node) {
         //     const editStack = node.model._commandManager;
         //     return editStack.currentOpenStackElement ||
         //         node.verison != editStack.past.length;
-        // },
-        // onedit(e) {
-        //     let error = 0, warn = 0;
-        //     const markers = monaco.editor.getModelMarkers();
-        //     for (let marker of markers) {
-        //         if (marker.severity < 2) continue;
-        //         else if (marker.severity < 6) warn++;
-        //         else error++;
-        //     }
-        //     this.error = error, this.warn = warn;
-        //     if (this.node) this.node.editted = this.checkEdit(this.node);
         // },
         // oncursor(e) {
         //     this.line = e.position.lineNumber, this.col = e.position.column;
@@ -90,8 +88,8 @@ export default {
                 this.$emit('save', this.node);
             }
         },
-        onchange() {
-            this.model
+        onchange({ detail: { field, value, type } }) {
+            this.model.edit({ field, value, type });
         }
     },
     components: {

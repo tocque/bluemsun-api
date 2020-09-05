@@ -3,6 +3,7 @@ import Vue from "vue"
 import { mapState } from "vuex"
 import { localfs } from "../fs"
 import JSOutputer from "./javascript-axios"
+import JavaOutputer from "./java-spring"
 
 const path = require('path')
 
@@ -10,7 +11,8 @@ store.registerModule('$output', {
     namespaced: true,
     state: {
         transpilers: {
-            "javascript-axios": new JSOutputer()
+            "javascript-axios": new JSOutputer(),
+            "java-spring": new JavaOutputer()
         },
         tasks: [
 
@@ -28,9 +30,12 @@ store.registerModule('$output', {
     },
     actions: {
         async output({ state, rootState }, { transpiler, dest: base }) {
+            bluemsunApi.window.$print(`使用${transpiler}输出到${ base }...`);
+            console.log(transpiler);
             return state.transpilers[transpiler].generate(rootState.data, (str, dest) => {
-                console.log(path.resolve(base, dest))
-                return localfs.write(path.resolve(base, dest), str);
+                return localfs.write(path.resolve(base, dest), str).then(() => {
+                    bluemsunApi.window.$print(`${ base }: 输出完毕`);
+                });
             });
         },
         async outputAll({ state, dispatch }) {
@@ -64,7 +69,7 @@ new Vue({
         work(val) {
             if (val) {
                 store.commit('$output/load', {
-                    tasks: store.state.projectInfo.config.outputTasks
+                    tasks: store.state.project.outputTasks
                 })
             } else {
 

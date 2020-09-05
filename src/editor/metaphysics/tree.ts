@@ -62,7 +62,8 @@ export const buildTree = function(data: any, comment: Schema): treenode {
             node.comment = pcomment[key] || pcomment["@default"];
         }
         if (typeof node.comment === 'string') {
-            node.comment = comment.attr.types[node.comment.slice(1)];
+            console.log(comment.attr);
+            node.comment = comment.attr.typedef[node.comment.slice(1)];
         }
         node.comment = Object.assign({}, defaultcobj, node.comment);
         return node;
@@ -73,7 +74,6 @@ export const buildTree = function(data: any, comment: Schema): treenode {
      * @param pcfield 父结点的注释域
      */
     const recursionParse = function (parent: treenode) {
-        console.log(parent);
         parent.children = [];
         let keysInOrder = {};
         const voidMark = {};
@@ -102,7 +102,7 @@ export const buildTree = function(data: any, comment: Schema): treenode {
             if (node.comment.hide) continue;
             parent.children.push(node);
             // 不是叶节点时, 插入展开的标记并继续遍历, 此处可以改成按钮用来添加新项或折叠等
-            if (node.comment.children && node.comment.children.length > 0) recursionParse(node);
+            if (node.comment.children && Object.keys(node.comment.children).length > 0) recursionParse(node);
         }
     }
     // 开始遍历

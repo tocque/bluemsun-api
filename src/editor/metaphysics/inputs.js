@@ -137,7 +137,8 @@ export default function (type) {
             },
             methods: {
                 addChild() {
-                    const field = this.data.field + "[]", value = this.value;
+                    if (this.data.data["newprop"]) return;
+                    const field = this.data.field + "[newprop]", value = "string";
                     this.$el.dispatchEvent(new CustomEvent("changeNode", {
                         detail: { field, value },
                         bubbles: true,
@@ -148,10 +149,39 @@ export default function (type) {
         case "meta": return {
             inner() { 
                 return [
-                    <input class="mt-input" type="text" vModel={ this.value } vOn:change={ this.onchange }/>,
-                    ":",
-                    <input class="mt-input" type="text" vModel={ this.value } vOn:change={ this.onchange }/>
-                ]
+                    <input class="mt-input" type="text" vModel={ this.extra.propname } vOn:change={ this.rename }/>,
+                    ": ",
+                    <input class="mt-input" type="text" vModel={ this.value } vOn:change={ this.update }/>,
+                    <div class="icon-btn">
+                        <mt-icon icon="close" vOn:click={ this.delete }></mt-icon>
+                    </div>
+                ];
+            },
+            init() {
+                this.$set(this.extra, "propname", this.data.key);
+            },
+            methods: {
+                rename() {
+                    const field = this.data.field, value = this.extra.propname;
+                    this.$el.dispatchEvent(new CustomEvent("changeNode", {
+                        detail: { field, value, type: "rename" },
+                        bubbles: true,
+                    }));
+                },
+                update() {
+                    const field = this.data.field, value = this.value;
+                    this.$el.dispatchEvent(new CustomEvent("changeNode", {
+                        detail: { field, value },
+                        bubbles: true,
+                    }));
+                },
+                delete() {
+                    const field = this.data.field, value = this.value;
+                    this.$el.dispatchEvent(new CustomEvent("changeNode", {
+                        detail: { field, value, type: "delete" },
+                        bubbles: true,
+                    }));
+                }
             }
         }
         case "typedef": return {

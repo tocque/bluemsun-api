@@ -43,7 +43,7 @@ class Config {
 
 // @ts-ignore
 Config.make = async function(src: string, obj: any) {
-    return localfs.write(this.src,  JSON.stringify(this.config, null, 4) , 'utf-8');
+    return localfs.write(src, JSON.stringify(obj, null, 4) , 'utf-8');
 }
 
 export default Config;

@@ -31,16 +31,22 @@
     },
     "tags": [
         {
-            "id": "114514",
+            "id": "tag:1",
             "comment": "xxxx",
             "name": "用 户",
             "filename": "user"
+        },
+        {
+            "id": "tag:2",
+            "comment": "不在其他分类的, 就放在这吧,,,,",
+            "name": "其他",
+            "filename": "others"
         }
     ],
     "interfaces": [
         {
-            "id": 1,
-            "name": "xxxx",
+            "id": "interface:1",
+            "name": "xxx",
             "uri": "/user/{id}",
             "method": "POST",
             "headers": {
@@ -56,6 +62,10 @@
                 "bbb": {
                     "type": "string",
                     "comment": "get"
+                },
+                "ccc": {
+                    "type": "number",
+                    "comment": "cnt"
                 }
             },
             "response": {
@@ -66,7 +76,7 @@
                 }
             },
             "comment": "rua, 不要啊",
-            "tag": "114514",
+            "tag": "tag:1",
             "meta": {
                 "java.class": "userxxx"
             },

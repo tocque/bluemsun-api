@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import SocketConnect from "@/socket/index";
 import { createGroup, joinGroup } from "@/api/user/group";
 import { logout } from "@/api/user/sign";
 import { mapState } from "vuex";
@@ -122,6 +123,7 @@ export default {
       items: [
         { title: "组织列表", icon: "mdi-view-dashboard" },
         { title: "个人中心", icon: "mdi-help-box" },
+        { title: "消息列表", icon: "mdi-help-box" },
       ],
       color: "primary",
       miniVariant: false,
@@ -133,7 +135,8 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$route);
+    window.ipcRenderer.send("windowShow");
+    SocketConnect(this.$store.state.user.userId);
     this.index = parseInt(this.$route.query.index);
   },
   computed: {
@@ -159,6 +162,11 @@ export default {
             query: {
               index: 1,
             },
+          });
+          break;
+        case 2:
+          this.$router.push({
+            name: "InfoList",
           });
           break;
         default:

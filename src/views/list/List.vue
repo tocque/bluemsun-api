@@ -54,7 +54,7 @@
                         link
                         v-if="item.type <= v.type"
                         :key="index"
-                        @click="handleOperate(v.id, item.groupId)"
+                        @click="handleOperate(v.type, item.groupId)"
                       >
                         <v-list-item-title>{{ v.title }}</v-list-item-title>
                       </v-list-item>
@@ -85,54 +85,17 @@ import {
   deleteGroup,
   leaveGroup,
 } from "@/api/user/group";
-const { ipcRenderer } = require('electron');
-
+import { ipcRenderer } from 'electron';
 export default {
   data() {
     return {
       items: [
         { title: "删除组", type: 0, id: 1 },
         { title: "重命名", type: 1, id: 2 },
-        { title: "成员管理", type: 1, id: 3 },
+        { title: "成员管理", type: 2, id: 3 },
         { title: "退出该组", type: 3, id: 4 },
       ],
-      list: [
-        {
-          groupName: "高三数学特训",
-          groupId: "XHZE46",
-          jsonFile: "jsonStorage/advceefeFWDCSAZ.JSON",
-          md5: "asdasdade23edwscsdcs",
-          creator: "潘炳名",
-        },
-        {
-          groupName: "答题系统",
-          groupId: "XHZE47",
-          jsonFile: "jsonStorage/advceefeFWDCSAZ.JSON",
-          md5: "asdasdade23edwscsdcs",
-          creator: "潘炳名",
-        },
-        {
-          groupName: "接口生成器",
-          groupId: "XHZE48",
-          jsonFile: "jsonStorage/advceefeFWDCSAZ.JSON",
-          md5: "asdasdade23edwscsdcs",
-          creator: "潘炳名",
-        },
-        {
-          groupName: "高三数学特训",
-          groupId: "XHZE49",
-          jsonFile: "jsonStorage/advceefeFWDCSAZ.JSON",
-          md5: "asdasdade23edwscsdcs",
-          creator: "潘炳名",
-        },
-        {
-          groupName: "高三数学特训",
-          groupId: "XHZE19",
-          jsonFile: "jsonStorage/advceefeFWDCSAZ.JSON",
-          md5: "asdasdade23edwscsdcs",
-          creator: "潘炳名",
-        },
-      ],
+      list: [],
       copyText: "",
       page: 1,
       totalPages: 0,
@@ -225,7 +188,7 @@ export default {
               });
           });
           break;
-        case 3:
+        case 2:
           this.$router.push({
             path: "/project",
             query: {
@@ -264,7 +227,7 @@ export default {
       });
     },
     handleToItem(id, type) {
-      ipcRenderer.send('open-editor', { id, type });
+      ipcRenderer.send("open-editor", { id, type })
     },
   },
 };

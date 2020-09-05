@@ -1,6 +1,10 @@
 <template>
   <div class="login-wrapper">
     <div class="login-container">
+      <!-- <div class="menu">
+        <v-icon @click="minus">mdi-minus</v-icon
+        ><v-icon @click="close">mdi-close</v-icon>
+      </div> -->
       <div class="mb-22 title">
         <span>BLUEMSUN-API</span>
       </div>
@@ -46,8 +50,12 @@
       <div class="mb-22 check">
         <v-text-field v-model="check" label="验证码"></v-text-field>
         <div class="get-check">
-          <v-btn large @click="handleGetCheck" color="secondary" dark
-            >获取验证码</v-btn
+          <v-btn
+            large
+            :disabled="disabled"
+            color="secondary"
+            @click="handleGetCheck"
+            >获取验证码{{ disabled ? "(" + time + ")" : "" }}</v-btn
           >
         </div>
       </div>
@@ -57,7 +65,7 @@
         >
       </div>
       <div class="router">
-        <router-link to="login">返回登录</router-link>
+        <v-btn text @click="handleToLogin">返回登录</v-btn>
       </div>
     </div>
   </div>
@@ -71,42 +79,90 @@ export default {
       username: "",
       showpassword: false,
       email: "",
-      password: "Password",
+      password: "",
+      disabled: false,
       confirmPwd: "",
       showConfirmPwd: false,
       loading: false,
       loader: null,
       check: "",
+      time: 60,
       emailRules: [
         (v) => !!v || "邮箱不能为空",
         (v) => /.+@.+/.test(v) || "邮箱不合法",
       ],
       confirmPwdRules: [(v) => this.password === v || "两次密码不相同"],
+      timer: null,
     };
   },
+  watch: {
+    time(val) {
+      if (val <= 0) {
+        this.disabled = false;
+        this.timer = null;
+      }
+    },
+  },
   methods: {
+    handleToLogin() {
+      window.ipcRenderer.send("openLogin");
+      this.$router.push("/login");
+    },
+    minus() {
+      window.ipcRenderer.send("minus");
+    },
+    close() {
+      window.ipcRenderer.send("close");
+    },
     handleRegist() {
+      this.$message.success("注册成功");
       const formdata = new FormData();
       formdata.append("email", this.email);
       formdata.append("username", this.username);
       formdata.append("password", this.password);
       formdata.append("check", this.check);
-      regist(formdata);
+      regist(formdata)
+        .then((res) => {
+          if (res.success === 1) {
+            this.$message.success("注册成功");
+          } else {
+            this.$message.error(res.msg || "注册失败");
+          }
+        })
+        .catch(() => {
+          this.$message.error("系统错误");
+        });
     },
     handleGetCheck() {
       if (!this.email || !/.+@.+/.test(this.email)) {
-        console.log("邮箱不合法");
       } else {
         emailCheck({
           email: this.email,
           type: 1,
-        });
+        })
+          .then((res) => {
+            if (res.success === 1) {
+              this.disabled = true;
+              this.time = 60;
+              this.timer = setInterval(() => {
+                this.time--;
+              }, 1000);
+            } else {
+              this.$message.error(res.msg || "注册失败");
+            }
+          })
+          .catch(() => {
+            this.$message.error("系统错误");
+          });
       }
     },
   },
 };
 </script>
-
+<style lang="stylus">
+html,body
+  overflow hidden
+</style>
 <style lang="stylus" scoped>
 .login-wrapper
     position absolute
@@ -126,6 +182,12 @@ export default {
         border-radius 4px;
         padding 50px
         box-sizing border-box
+        .menu
+          position absolute
+          right 4px
+          top 4px
+          i
+            cursor pointer
         .title
             text-align center
             font-size 38px

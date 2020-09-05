@@ -88,13 +88,12 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
 
 // @ts-ignore
 window.bluemsunApi = bluemsunApi;
-
-const [ type, id ] = [2, "XHZE46"];
-    // window.location.search.slice(1).split('&');
-Promise.all(["globals", "main"].map((name) => {
+const p = new URL(window.location.href).searchParams;
+const [ type, id ] = [ p.get("type"), p.get("id") ];
+Promise.all(["global", "interface", "tag"].map(async (name) => {
     return fetch(`./schema/${name}.json`)
         .then(e => e.json())
         .then(schema => registerSchema(name, schema))
 })).then(() => {
-    bluemsunApi.openProject(id, type);
+    bluemsunApi.openProject(id, parseInt(type));
 })

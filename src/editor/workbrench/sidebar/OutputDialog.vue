@@ -5,7 +5,12 @@
             <input class="mt-input" v-model="form.name"/>
         </mt-form-item>
         <mt-form-item label="转译器">
-            <mt-select :options="transpilerList" v-model="form.transpiler"></mt-select>
+            <select v-model="form.transpiler">
+                <option v-for="option of transpilerList" :key="option.value" 
+                    :value="option.value"
+                >{{ option.label }}</option>
+            </select>
+            <!-- <mt-select :options="transpilerList" v-model="form.transpiler"></mt-select> -->
         </mt-form-item>
         <mt-form-item label="输出路径">
             <span>{{ form.dest }}</span>

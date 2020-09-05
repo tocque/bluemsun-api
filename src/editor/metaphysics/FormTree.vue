@@ -1,6 +1,9 @@
 <template>
     <div class="container form-tree">
-        <el-tree :data="tree" ref="tree" @node-contextmenu="openMenu">
+        <el-tree :data="tree" ref="tree" :basePadding="10"
+            @node-contextmenu="openMenu" node-key="field"
+            :expand-on-click-node="false"
+        >
             <form-node 
                 slot-scope="{ node, data }" :node="node" :data="data"
             ></form-node>
@@ -37,9 +40,11 @@ export default {
             this.commentObj
             await game.post(this.commentsrc+"/delete", item.field);
         },
-        update(data, comment) {
+        update(data, comment, diff) {
             this.data = data;
-            this.tree = buildTree(data, comment).children;
+            const tree = buildTree(data, comment).children;
+            if (diff) this.tree = diff(tree);
+            else this.tree = tree;
         },
         /** @param {MouseEvent} e */
         openMenu(e, item) {
@@ -90,5 +95,6 @@ export default {
 }
 .form-tree .el-tree-node__content {
     padding: 0px;
+    padding-left: 10px;
 }
 </style>

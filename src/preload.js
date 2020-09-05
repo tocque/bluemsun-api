@@ -1,3 +1,2 @@
-import { ipcRenderer } from 'electron'
-console.log("1111")
+const { ipcRenderer } = require('electron')
 window.ipcRenderer = ipcRenderer

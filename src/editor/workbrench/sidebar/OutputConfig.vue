@@ -49,6 +49,7 @@ export default {
         addTask() {
             this.$refs.dialog.open('add').then((task) => {
                 if (task) {
+                    console.log(task);
                     this._addTask(task);
                 }
             })

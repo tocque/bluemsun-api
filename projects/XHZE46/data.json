@@ -31,7 +31,7 @@
     },
     "tags": [
         {
-            "id": "114514",
+            "id": "tag:1",
             "comment": "xxxx",
             "name": "用 户",
             "filename": "user"
@@ -39,7 +39,7 @@
     ],
     "interfaces": [
         {
-            "id": 1,
+            "id": "interface:1",
             "name": "xxxx",
             "uri": "/user/{id}",
             "method": "POST",
@@ -66,7 +66,7 @@
                 }
             },
             "comment": "rua, 不要啊",
-            "tag": "114514",
+            "tag": "tag:1",
             "meta": {
                 "java.class": "userxxx"
             },

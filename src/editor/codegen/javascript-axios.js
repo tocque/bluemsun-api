@@ -69,8 +69,8 @@ export function ${value.name} (${lparams.concat(params).map(([v]) => v).join(', 
         const config = Object.assign({
             to: "request",
             header: ""
-        }, doc.globals.meta[this.name] || {});
-        const typeDefine = Object.entries(doc.globals.types).reduce((str, [k, v]) => {
+        }, doc.global.meta[this.name] || {});
+        const typeDefine = Object.entries(doc.global.types).reduce((str, [k, v]) => {
             return str + /* js */`
 /**
  * @typedef {${this.typeGenerate(v)}} ${k}

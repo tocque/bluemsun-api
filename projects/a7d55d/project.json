@@ -1,0 +1,14 @@
+{
+    "groupId": "a7d55d",
+    "groupName": "新建组",
+    "jsonFile": "/jsonStorage/7003f096-f1e7-4bb3-840d-6eec370c9ed7.json",
+    "md5": "6c7ebe9c66f7eab1ab5a794cc88210a9",
+    "type": 0,
+    "outputTasks": [
+        {
+            "name": "frontend",
+            "transpiler": "javascript-axios",
+            "dest": "C:\\Users\\tocque\\projects\\bluemsun-api\\output\\frontend"
+        }
+    ]
+}

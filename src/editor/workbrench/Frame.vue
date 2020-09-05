@@ -25,6 +25,7 @@
         <footer id="statusBar">
             <ul ref="left" id="statusLeft">
                 <status-item left :class="messageType">{{ message }}</status-item>
+                <status-item>{{ editNow }}</status-item>
             </ul>
             <ul ref="right" id="statusRight"></ul>
         </footer>
@@ -64,6 +65,9 @@ export default {
     computed: {
         ...mapGetters({
             projectName: 'name', // 与标题相绑定
+        }),
+        ...mapState({
+            editNow: "editNow"
         })
     },
     created() {
@@ -106,7 +110,7 @@ export default {
             parent.appendChild($el);
         },
         ...mapActions({
-            _openEditor: openEditor
+            _openEditor: "openEditor"
         }),
         openEditor(id, node) {
             return this._openEditor({ 

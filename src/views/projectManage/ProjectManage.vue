@@ -2,6 +2,9 @@
   <div class="member-container">
     <div class="main-content">
       <div class="title">
+        <v-btn @click="handleToBack" style="margin-right: 20px"
+          ><v-icon dark>mdi-chevron-left</v-icon>返回首页</v-btn
+        >
         <span class="text">成员管理</span
         ><v-btn text><v-icon dark>mdi-plus</v-icon>邀请成员</v-btn>
         <span>
@@ -83,26 +86,7 @@ import { showMember, manageMember, deleteMember } from "@/api/user/group";
 export default {
   data() {
     return {
-      memberList: [
-        {
-          username: "李白",
-          userId: 1233,
-          type: 1,
-          email: "123123",
-        },
-        {
-          username: "李白",
-          userId: 12323,
-          type: 2,
-          email: "123123",
-        },
-        {
-          username: "李白李白李白李白李白李白李白",
-          userId: 123,
-          type: 3,
-          email: "123123",
-        },
-      ],
+      memberList: [],
       page: 1,
       totalPages: 10,
       search: "",
@@ -118,10 +102,13 @@ export default {
     handleChangePage() {
       this.getMemberList({ pageNum: this.page });
     },
+    handleToBack() {
+      this.$router.push("/list");
+    },
     async getMemberList(config) {
       const params = {
         pageNum: 1,
-        pageSize: 1,
+        pageSize: 10,
         search: "",
         groupId: this.$route.query.groupId,
         ...config,

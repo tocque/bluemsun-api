@@ -5,13 +5,16 @@
             "hide": true
         },
         "name": {
-            "type": "string"
+            "name": "标签名称",
+            "type": "text"
         },
         "comment": {
-            "type": "string"
+            "name": "注释",
+            "type": "text"
         },
         "filename": {
-            "type": "string"
+            "name": "输出文件名",
+            "type": "text"
         }
     }
 }

@@ -1,8 +1,9 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, dialog, shell } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, dialog, shell, Menu } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import path from 'path'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -14,51 +15,14 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
-function listenIPC(win: BrowserWindow) {
-  win.on('closed', () => {
-    win = null
-  })
-
-  ipcMain.on('window-minimize', () => {
-      win.minimize();
-  })
-
-  ipcMain.on('window-maximize', (event) => {
-      const maxed = win.isMaximized();
-      if (maxed) {
-          win.restore();
-      } else {
-          win.maximize();
-      }
-      event.sender.send('window-maximized', !maxed)
-  })
-
-  ipcMain.on('window-close', () => {
-      win.close();
-  })
-
-  ipcMain.on('open-devtool', () => {
-      win.webContents.openDevTools();
-  })
-
-  ipcMain.on('open-directory-dialog', (event, p) => {
-      dialog.showOpenDialog({
-          properties: [p]
-      }).then(({ canceled, filePaths }) => {
-          if (!canceled) {
-              event.sender.send('selectedItem', filePaths[0]);
-          }
-      });
-  });
-}
-
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 900,
-    height: 640,
-    frame: false,
+    width: 500,
+    height: 410,
+    frame: true,
     darkTheme: true,
+    titleBarStyle: "hidden",
     // resizable: false,
     transparent: true,
     webPreferences: {
@@ -66,27 +30,25 @@ function createWindow() {
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: (process.env
           .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
-      webSecurity: false
+      webSecurity: false,
+      preload: path.join(__dirname, "preload.js"),
     }
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
+    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL+'index.html/#/login' as string)
+    // if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    win.loadURL('app://./index.html/#/login')
   }
 
-  listenIPC(win);
-
   let winHandler: Map<string, BrowserWindow> = new Map;
-  
+  Menu.setApplicationMenu(null)
   win.on('close', () => {
     winHandler.forEach(e => e.close());
-    winHandler.clear();
   })
 
   win.on('closed', () => {
@@ -94,9 +56,41 @@ function createWindow() {
     win = null
   })
 
+  ipcMain.on("mergeDoc", (_, id) => {
+    console.log(id)
+  })
+
+  ipcMain.on("showMainWin", () => {
+    win.show()
+  })
+
+  ipcMain.on("openRegist", () => {
+    win.setSize(500, 700)
+    win.center()
+  })
+
+  ipcMain.on("openLogin", () => {
+    win.setSize(500, 410)
+    win.center()
+  })
+
+  let hasLogin = false
+  ipcMain.on("loginSuccess", () => {
+    hasLogin = true
+    win.setSize(0, 0)
+  })
+
+  ipcMain.on("windowShow", () => {
+    if (hasLogin) {
+      win.setSize(960, 700)
+      win.setResizable(true)
+      win.center()
+    }
+  })
+
   ipcMain.on('open-editor', (event, { id, type }) => {
     if (winHandler.has(id)) return;
-    const editor = new BrowserWindow({
+    let editor = new BrowserWindow({
       width: 900,
       height: 640,
       frame: false,
@@ -104,7 +98,8 @@ function createWindow() {
         // Use pluginOptions.nodeIntegration, leave this alone
         // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
         nodeIntegration: (process.env
-            .ELECTRON_NODE_INTEGRATION as unknown) as boolean
+            .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
+        webSecurity: false,
       }
     })
 
@@ -114,17 +109,51 @@ function createWindow() {
     })
 
     editor.on('close', () => {
-      winHandler.delete(id);
     })
 
-    listenIPC(editor);
+    editor.on('closed', () => {
+      winHandler.delete(id);
+      editor = null
+    })
+
+    ipcMain.on('window-minimize', () => {
+        editor.minimize();
+    })
+  
+    ipcMain.on('window-maximize', (event) => {
+        const maxed = editor.isMaximized();
+        if (maxed) {
+          editor.restore();
+        } else {
+          editor.maximize();
+        }
+        event.sender.send('window-maximized', !maxed)
+    })
+  
+    ipcMain.on('window-close', () => {
+      editor.close();
+    })
+  
+    ipcMain.on('open-devtool', () => {
+      editor.webContents.openDevTools();
+    })
+  
+    ipcMain.on('open-directory-dialog', (event, p) => {
+        dialog.showOpenDialog({
+            properties: [p]
+        }).then(({ canceled, filePaths }) => {
+            if (!canceled) {
+                event.sender.send('selectedItem', filePaths[0]);
+            }
+        });
+    });
 
     const param = `?type=${type}&id=${id}`;
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
       // Load the url of the dev server if in development mode
       editor.loadURL(process.env.WEBPACK_DEV_SERVER_URL + "editor.html" + param as string)
-      if (!process.env.IS_TEST) editor.webContents.openDevTools()
+      // if (!process.env.IS_TEST) editor.webContents.openDevTools()
     } else {
       createProtocol('app')
       // Load the index.html when not in development

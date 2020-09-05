@@ -7,11 +7,11 @@ export default {
     render() {
         const comment = this.comment;
         return (
-            <div class={"control-node "+this.difftype} 
+            <div class={"control-node "+this.data.diff} 
                 title={ comment.comment+this.data.field }
                 field={ this.data.field }
             >
-                <div class="control-content">
+                <div class={"control-content __"+this.comment.type}>
                     <span class="comment">{ comment.name }</span>
                     <div class="control-input">
                         { exec(this.inner) }
@@ -33,17 +33,19 @@ export default {
     props: ["node", "data"],
     computed: {
         showFold() {
-            return ["table", "textarea"].includes(this.comment._type);
+            return ["table", "textarea"].includes(this.comment.type);
         }
     },
     data: function() {
         return {
             comment: '',
             value: '',
-            fold: false
+            fold: false,
+            extra: {},
         }
     },
     created() {
+        console.log(this);
         const type = this.data.comment.type;
         const _input = getInput(type);
         ["inner", "external", "defaultValidate", "init"].forEach((e) => {
@@ -103,15 +105,26 @@ export default {
 .control-node {
     padding: 5px 5px 5px 20px;
     width: 100%;
-    border-left: 3px;
-    &.modify {
-        border-left: solid #0c7d9d;
+    .__meta {
+        .comment {
+            display: none;
+        }
+        .control-input {
+            display: flex;
+            width: 100%;
+            .icon-btn {
+                margin-left: auto;
+            }
+        }
+    }
+    &.modified {
+        border-left: 3px solid #0c7d9d;
     }
     &.untracked {
-        border-left: solid #587c0c;
+        border-left: 3px solid #587c0c;
     }
     &.deleted {
-        border-left: solid #94151B;
+        border-left: 3px solid #94151B;
     }
     .control-content {
         display: flex;
@@ -122,18 +135,19 @@ export default {
         width: 124px;
         background-color: #444;
         border: none;
-        padding: 2px;
+        padding: 4px;
         color: var(--c-text);
     }
     .control-input>.mt-input {
-        max-width: 120px;
+        max-width: 240px;
+        padding: 4px;
     }
     input[type="number"] {
         background-color: #444;
         border: none;
-        padding: 2px;
+        padding: 4px;
         color: var(--c-text);
-        max-width: 100px;
+        max-width: 240px;
     }
     span.const {
         font-weight: bold;

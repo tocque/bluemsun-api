@@ -1,10 +1,12 @@
 {
     "type": "root",
-    "typedef": {
-        "type": {
-            "type": "key-value",
-            "children": {
-                "@default": "@type"
+    "attr": {
+        "typedef": {
+            "type": {
+                "type": "key-value",
+                "children": {
+                    "@default": "@type"
+                }
             }
         }
     },
@@ -60,9 +62,6 @@
             "type": "text"
         },
         "tag": {
-            "hide": true
-        },
-        "mixin": {
             "hide": true
         },
         "meta": {
