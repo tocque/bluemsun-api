@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bluemsun.dao.GroupDao">
+
+    <insert id="insert">
+        insert into tb_group(group_id,group_name,create_time)
+        values(#{groupId},#{name},now())
+    </insert>
+    <update id="updateGroup">
+        update tb_group
+        set group_name = #{name}
+        where group_id =#{groupId}
+    </update>
+    <update id="updateFile">
+        update tb_group
+        set md5 = #{md5} , json_file=#{s}
+        where group_id = #{groupId}
+    </update>
+    <delete id="deleteGroup">
+        delete from tb_group
+        where group_id =#{groupId}
+    </delete>
+    <select id="checkGroup" resultType="java.lang.Integer">
+        select count(*)
+        from tb_group
+        where group_id =#{groupId}
+    </select>
+    <select id="getGroupByUser" resultType="com.bluemsun.vo.GroupVo">
+        select g.group_name,g.group_id,g.json_file,g.md5,m.type
+        from tb_group g,tb_member m
+        where m.user_id = #{userId} and m.group_id = g.group_id
+        <if test="search!=null">
+            and (g.group_id like "%"#{search}"%" or g.group_name like "%"#{search}"%")
+        </if>
+        order by create_time DESC
+        limit #{startIndex},#{pageSize};
+    </select>
+    <select id="getGroupByUserCount" resultType="java.lang.Integer">
+        select count(*)
+        from tb_group g,tb_member m
+        where m.user_id = #{userId} and m.group_id = g.group_id
+        <if test="search!=null">
+        and (g.group_id like "%"#{search}"%" or g.group_name like "%"#{search}"%")
+        </if>
+    </select>
+    <select id="getGroup" resultType="com.bluemsun.vo.GroupVo">
+        select g.group_name,g.group_id,g.json_file,g.md5,m.type
+        from tb_group g,tb_member m
+        where m.user_id = #{userId} and m.group_id = g.group_id
+        and g.group_id = #{groupId}
+    </select>
+</mapper>

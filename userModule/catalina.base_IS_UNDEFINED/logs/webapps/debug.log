@@ -1,0 +1,72 @@
+2019-12-17 18:38:52.993 [main] DEBUG com.bluemsun.dao.UserDao.listNowUser - ==>  Preparing: SELECT user_id,user_name,status,available,last_editTime,createTime,email FROM tb_user order by available desc , status desc LIMIT ?,?; 
+2019-12-17 18:38:53.059 [main] DEBUG com.bluemsun.dao.UserDao.listNowUser - ==> Parameters: 0(Integer), 15(Integer)
+2019-12-17 18:42:09.859 [main] DEBUG com.bluemsun.dao.UserDao.listNowUser - ==>  Preparing: SELECT user_id,user_name,status,available,last_editTime,create_time,email FROM tb_user order by available desc , status desc LIMIT ?,?; 
+2019-12-17 18:42:09.923 [main] DEBUG com.bluemsun.dao.UserDao.listNowUser - ==> Parameters: 0(Integer), 15(Integer)
+2019-12-17 18:42:10.003 [scheduler-1] DEBUG com.bluemsun.dao.UserDao.getAllUser - ==>  Preparing: SELECT user_id,user_name,status,available,last_editTime,create_time,email from tb_user order by available desc , status desc 
+2019-12-17 18:42:10.005 [scheduler-1] DEBUG com.bluemsun.dao.UserDao.getAllUser - ==> Parameters: 
+2019-12-17 18:42:10.120 [scheduler-1] DEBUG com.bluemsun.dao.UserDao.getAllUser - <==      Total: 2
+2019-12-17 18:42:10.120 [main] DEBUG com.bluemsun.dao.UserDao.listNowUser - <==      Total: 2
+2019-12-17 19:55:21.394 [main] DEBUG com.bluemsun.dao.UserDao.CheckPasswordTime - ==>  Preparing: SELECT last_editTime from tb_user WHERE user_id=? 
+2019-12-17 19:55:21.526 [main] DEBUG com.bluemsun.dao.UserDao.CheckPasswordTime - ==> Parameters: 1(Integer)
+2019-12-17 19:56:02.903 [main] DEBUG com.bluemsun.dao.UserDao.CheckPasswordTime - ==>  Preparing: SELECT last_editTime from tb_user WHERE user_id=? 
+2019-12-17 19:56:02.922 [main] DEBUG com.bluemsun.dao.UserDao.CheckPasswordTime - ==> Parameters: 1(Integer)
+2019-12-17 19:56:02.933 [main] DEBUG com.bluemsun.dao.UserDao.CheckPasswordTime - <==      Total: 1
+2019-12-17 19:58:09.099 [main] DEBUG com.bluemsun.dao.UserDao.CheckPasswordTime - ==>  Preparing: SELECT last_editTime from tb_user WHERE user_id=? 
+2019-12-17 19:58:09.119 [main] DEBUG com.bluemsun.dao.UserDao.CheckPasswordTime - ==> Parameters: 1(Integer)
+2019-12-17 19:58:09.156 [main] DEBUG com.bluemsun.dao.UserDao.CheckPasswordTime - <==      Total: 1
+2019-12-17 20:22:17.384 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==>  Preparing: update tb_user set status =?,available=? where user_id=? 
+2019-12-17 20:22:17.405 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==> Parameters: 1(Integer), 1(Integer), 1(Integer)
+2019-12-17 20:22:17.540 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - <==    Updates: 1
+2019-12-17 20:23:15.101 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==>  Preparing: update tb_user set status =?,available=? where user_id=? 
+2019-12-17 20:23:15.121 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==> Parameters: 1(Integer), 1(Integer), 1(Integer)
+2019-12-17 20:23:15.154 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - <==    Updates: 1
+2019-12-17 20:23:15.158 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 20:23:15.158 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: kate(String)
+2019-12-17 20:24:20.096 [scheduler-1] DEBUG com.bluemsun.dao.UserDao.getAllUser - ==>  Preparing: SELECT user_id,user_name,status,available,last_editTime,create_time,email from tb_user order by available desc , status desc 
+2019-12-17 20:24:20.114 [scheduler-1] DEBUG com.bluemsun.dao.UserDao.getAllUser - ==> Parameters: 
+2019-12-17 20:24:20.127 [scheduler-1] DEBUG com.bluemsun.dao.UserDao.getAllUser - <==      Total: 2
+2019-12-17 20:24:20.180 [scheduler-1] DEBUG com.bluemsun.dao.UserDao.deleteUser - ==>  Preparing: delete from tb_user where user_id=? 
+2019-12-17 20:24:20.181 [scheduler-1] DEBUG com.bluemsun.dao.UserDao.deleteUser - ==> Parameters: 9(Integer)
+2019-12-17 20:24:20.186 [scheduler-1] DEBUG com.bluemsun.dao.UserDao.deleteUser - <==    Updates: 1
+2019-12-17 20:24:20.239 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==>  Preparing: update tb_user set status =?,available=? where user_id=? 
+2019-12-17 20:24:20.240 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==> Parameters: 1(Integer), 1(Integer), 1(Integer)
+2019-12-17 20:24:20.460 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - <==    Updates: 1
+2019-12-17 20:24:20.460 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 20:24:20.460 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: aaa(String)
+2019-12-17 20:24:40.840 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==>  Preparing: update tb_user set status =?,available=? where user_id=? 
+2019-12-17 20:24:40.858 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==> Parameters: 1(Integer), 1(Integer), 1(Integer)
+2019-12-17 20:24:40.862 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - <==    Updates: 1
+2019-12-17 20:24:40.864 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 20:24:40.864 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: aaa(String)
+2019-12-17 20:24:56.583 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==>  Preparing: update tb_user set status =?,available=? where user_id=? 
+2019-12-17 20:24:56.602 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==> Parameters: 1(Integer), 1(Integer), 1(Integer)
+2019-12-17 20:24:56.623 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - <==    Updates: 1
+2019-12-17 20:26:36.466 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==>  Preparing: update tb_user set status =?,available=? where user_id=? 
+2019-12-17 20:26:36.487 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==> Parameters: 1(Integer), 1(Integer), 2(Integer)
+2019-12-17 20:26:36.488 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - <==    Updates: 0
+2019-12-17 20:29:34.999 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==>  Preparing: update tb_user set status =?,available=? where user_id=? 
+2019-12-17 20:29:35.017 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==> Parameters: 1(Integer), 1(Integer), 2(Integer)
+2019-12-17 20:29:35.018 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - <==    Updates: 0
+2019-12-17 20:29:35.020 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 20:29:35.021 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: aaa(String)
+2019-12-17 20:29:47.638 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==>  Preparing: update tb_user set status =?,available=? where user_id=? 
+2019-12-17 20:29:47.656 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - ==> Parameters: 1(Integer), 1(Integer), 2(Integer)
+2019-12-17 20:29:47.657 [main] DEBUG c.b.dao.UserDao.UpdateUserAvailableAndStatus - <==    Updates: 0
+2019-12-17 20:38:16.155 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 20:38:16.173 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: aaa(String)
+2019-12-17 20:38:16.184 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - <==      Total: 1
+2019-12-17 20:41:48.349 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 20:41:48.366 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: aaa(String)
+2019-12-17 20:41:48.378 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - <==      Total: 1
+2019-12-17 20:42:01.398 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 20:42:01.421 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: aa(String)
+2019-12-17 20:42:01.432 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - <==      Total: 0
+2019-12-17 20:42:10.562 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 20:42:10.581 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: aaa(String)
+2019-12-17 20:42:10.592 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - <==      Total: 1
+2019-12-17 20:51:17.498 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 20:51:17.535 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: aa(String)
+2019-12-17 20:51:17.545 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - <==      Total: 0
+2019-12-17 21:56:42.230 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==>  Preparing: select available from tb_user where user_name=? 
+2019-12-17 21:56:42.250 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - ==> Parameters: aa(String)
+2019-12-17 21:56:42.262 [main] DEBUG com.bluemsun.dao.UserDao.getUserAvailable - <==      Total: 0

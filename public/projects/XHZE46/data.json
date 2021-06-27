@@ -1,0 +1,88 @@
+{
+    "global": {
+        "title": "水水水",
+        "index": "mota.pw",
+        "github": "github.com/tensforest/mota.pw",
+        "intro": "这是个水项目",
+        "baseURL": "mota.pw/water",
+        "meta": {
+            "javascript-axios.js": {
+                "to": "request"
+            }
+        },
+        "types": {
+            "info": {
+                "type": "object",
+                "props": {
+                    "aaa": "string",
+                    "bbb": {
+                        "type": "array",
+                        "subtype": "int"
+                    }
+                }
+            }
+        },
+        "mixins": [
+            {
+                "id": "1919810"
+
+            }
+        ]
+    },
+    "tags": [
+        {
+            "id": "tag:1",
+            "comment": "xxxx",
+            "name": "用 户",
+            "filename": "user"
+        },
+        {
+            "id": "tag:2",
+            "comment": "不在其他分类的, 就放在这吧,,,,",
+            "name": "其他",
+            "filename": "others"
+        }
+    ],
+    "interfaces": [
+        {
+            "id": "interface:1",
+            "name": "xxx",
+            "uri": "/user/{id}",
+            "method": "POST",
+            "headers": {
+                "content-type": "xxxx"
+            },
+            "requestParams": {
+                "aaa": {
+                    "type": "array",
+                    "subtype": "@info",
+                    "required": false,
+                    "comment": "啊啊啊"
+                },
+                "bbb": {
+                    "type": "string",
+                    "comment": "get"
+                },
+                "ccc": {
+                    "type": "number",
+                    "comment": "cnt"
+                }
+            },
+            "response": {
+                "code": {
+                    "type": "int", 
+                    "enum": [1, 2, 3],
+                    "comment": "1代表成功"
+                }
+            },
+            "comment": "rua, 不要啊",
+            "tag": "tag:1",
+            "meta": {
+                "java.class": "userxxx"
+            },
+            "mixin": [
+                "1919810"
+            ]
+        }
+    ]
+}

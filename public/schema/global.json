@@ -1,0 +1,50 @@
+{
+    "type": "root",
+    "attr": {
+        "typedef": {
+            "type": {
+                "name": "",
+                "type": "key-value",
+                "children": {
+                    "@default": "@type"
+                }
+            }
+        }
+    },
+    "children": {
+        "title": {
+            "name": "项目名称",
+            "type": "text"
+        },
+        "index": {
+            "name": "项目主页",
+            "type": "text"
+        },
+        "github": {
+            "name": "github地址",
+            "type": "text"
+        },
+        "intro": {
+            "name": "项目简介",
+            "type": "textarea"
+        },
+        "baseURL": {
+            "name": "项目基地址",
+            "type": "text"
+        },
+        "meta": {
+            "name": "元信息",
+            "type": "key-value",
+            "children": {
+                "@default": {
+                    "type": "meta"
+                }
+            }
+        },
+        "types": "@type",
+        "mixins": {
+            "hide": true,
+            "type": "key-value"
+        }
+    }
+}
