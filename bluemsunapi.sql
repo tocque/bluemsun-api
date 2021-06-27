@@ -1,5 +1,6 @@
 /*
  Navicat Premium Data Transfer
+ 
 
  Source Server         : 本地mysql服务器
  Source Server Type    : MySQL
